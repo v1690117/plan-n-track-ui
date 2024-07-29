@@ -5,12 +5,14 @@ jobs:
   build:
     name: Test context
     runs-on: ubuntu-latest
+    container:
+      image: node:18
+      env:
+        NODE_ENV: development
+#      volumes:
+#        - my_docker_volume:/volume_mount
     steps:
       - uses: actions/checkout@v3
-      - name: Prepare Node
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12.x
       - name: Install dependencies
         run: npm install
       - name: Test
