@@ -6,7 +6,7 @@ jobs:
     name: Test context
     runs-on: ubuntu-latest
     container:
-      image: node:18
+      image: node:20
       env:
         NODE_ENV: development
     steps:
