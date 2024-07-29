@@ -7,6 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: node:18
+      env:
+        NODE_ENV: development
     steps:
       - uses: actions/checkout@v3
       - name: Install dependencies
@@ -22,4 +24,4 @@ jobs:
         with:
           name: p-n-t-build
           path: build
-          retention-days: 1
+#          retention-days: 1
