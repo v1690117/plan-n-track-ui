@@ -6,7 +6,8 @@ jobs:
     name: Test context
     runs-on: ubuntu-latest
     steps:
-      - name: Display event name
+      - uses: actions/checkout@v3
+      - name: Install Dependencies
         run: npm i
-      - name: Display event name
+      - name: Build
         run: npm build
