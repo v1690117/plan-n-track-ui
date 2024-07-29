@@ -16,3 +16,4 @@ jobs:
         run: echo ${{ gitverse.repository_owner }}
       - name: Display actor
         run: echo ${{ gitverse.actor }}
+
