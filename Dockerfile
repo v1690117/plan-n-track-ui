@@ -7,4 +7,4 @@ RUN npm run build
 FROM nginxinc/nginx-unprivileged
 EXPOSE 8080
 COPY ./docker/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
-COPY --from=build /usr/app/dist /usr/share/nginx/html
+COPY --from=build /usr/app/build /usr/share/nginx/html
