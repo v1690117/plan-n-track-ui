@@ -20,7 +20,7 @@ jobs:
       - name: Build
         run: npm run build
       - name: Save Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v1
         with:
           name: p-n-t-build
           path: build
