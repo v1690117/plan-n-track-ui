@@ -7,10 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: node:18
-      env:
-        NODE_ENV: development
-#      volumes:
-#        - my_docker_volume:/volume_mount
     steps:
       - uses: actions/checkout@v3
       - name: Install dependencies
@@ -22,7 +18,8 @@ jobs:
       - name: Build
         run: npm run build
       - name: Save Artifacts
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: p-n-t-build
           path: build
+          retention-days: 1
