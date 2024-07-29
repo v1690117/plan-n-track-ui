@@ -7,7 +7,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Install Dependencies
-        run: npm i
+      - name: Prepare Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - name: Install dependencies
+        run: npm install
+      - name: Test
+        run: npm test
+        env:
+          CI: true
       - name: Build
-        run: npm build
+        run: npm run build
+      - name: Save Artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: p-n-t-build
+          path: build
