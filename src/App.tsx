@@ -21,7 +21,7 @@ function vibrationPattern(index: number){
 
 function App() {
   const [index, setIndex] = useState(0);
-  const onLogoClick = () => {
+  const onClick = () => {
     setIndex(prev => prev +1);
     vibrationPattern(index % patterns.length);
   }
@@ -29,9 +29,10 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p onClick={onLogoClick}>
+        <p onClick={onClick}>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
+        <button onClick={onClick}>Vibrate!</button>
       </header>
     </div>
   );
