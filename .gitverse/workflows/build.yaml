@@ -1,19 +1,21 @@
-name: Демонстрация GitVerse CI/CD
+name: Build the project
 on:
   push:
 jobs:
-  build-test:
+  build:
     name: Test context
     runs-on: ubuntu-latest
+    container:
+      image: node:20
+      env:
+        NODE_ENV: development
     steps:
-      - name: Display event name
-        run: echo ${{ gitverse.event_name }}
-      - name: Display Workflow
-        run: echo ${{ gitverse.workflow }}
-      - name: Display repository name
-        run: echo ${{ gitverse.Repository}}
-      - name: Display repository owner
-        run: echo ${{ gitverse.repository_owner }}
-      - name: Display actor
-        run: echo ${{ gitverse.actor }}
-
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: npm install
+      - name: Test
+        run: npm test
+        env:
+          CI: true
+      - name: Build
+        run: npm run build
