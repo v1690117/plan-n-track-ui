@@ -1,29 +1,30 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import {formattedDate} from "../utils";
 
 const WorkoutListPage: React.FC = () => {
     const navigate = useNavigate();
-    const [workouts, setWorkouts] = useState<{ id: number, title: string, date: string }[]>([
+    const [workouts, setWorkouts] = useState<{ id: number, title: string, date: number }[]>([
         {
             id: 1,
             title: 'Ноги 1',
-            date: "13/10/2024"
+            date: Date.now()
         },
         {
             id: 2,
             title: 'Руки 1',
-            date: "15/10/2024"
+            date: Date.now()
         },
         {
             id: 3,
             title: 'Грудь',
-            date: "18/10/2024"
+            date: Date.now()
         },
         {
             id: 4,
             title: 'Плечи',
-            date: "21/10/2024"
+            date: Date.now()
         }
     ]);
 
@@ -31,7 +32,7 @@ const WorkoutListPage: React.FC = () => {
         const newWorkout = {
             id: Date.now(),
             title: prompt("Введите название тренировки") || `Тренировка ${workouts.length + 1}`,
-            date: new Date().toLocaleString(),
+            date: Date.now(),
         };
         setWorkouts([...workouts, newWorkout]);
     };
@@ -47,7 +48,7 @@ const WorkoutListPage: React.FC = () => {
                 {workouts.map(workout => (
                     <WorkoutItem key={workout.id} onClick={() => handleWorkoutClick(workout.id)}>
                         <WorkoutTitle>{workout.title}</WorkoutTitle>
-                        <WorkoutDate>{workout.date}</WorkoutDate>
+                        <WorkoutDate>{formattedDate(workout.date)}</WorkoutDate>
                     </WorkoutItem>
                 ))}
             </WorkoutList>

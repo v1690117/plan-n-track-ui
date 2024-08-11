@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import {formattedDate} from "../utils";
 
-const WorkoutPage: React.FC<{ workout: { id: number, title: string, date: string }, onClose: () => void }> = ({ workout, onClose }) => {
+const WorkoutPage: React.FC<{ workout: { id: number, title: string, date: number }, onClose: () => void }> = ({ workout, onClose }) => {
     const [exercises, setExercises] = useState<{ id: number, name: string, sets: { weight: string, reps: string, rest: string, completed: boolean, comment: string }[], expanded: boolean }[]>([]);
 
     const handleAddExercise = () => {
@@ -33,7 +34,7 @@ const WorkoutPage: React.FC<{ workout: { id: number, title: string, date: string
         <Container>
             <Header>
                 <WorkoutTitle>{workout.title}</WorkoutTitle>
-                <WorkoutDate>{workout.date}</WorkoutDate>
+                <WorkoutDate>{formattedDate(workout.date)}</WorkoutDate>
                 <CloseButton onClick={onClose}>Закрыть</CloseButton>
             </Header>
             <ExerciseList>
@@ -47,24 +48,20 @@ const WorkoutPage: React.FC<{ workout: { id: number, title: string, date: string
                             <ExerciseDetails>
                                 {exercise.sets.map((set, index) => (
                                     <SetRow key={index}>
-                                        <input type="checkbox" checked={set.completed} onChange={() => {
+                                        <Checkbox type="checkbox" checked={set.completed} onChange={() => {
                                             const newSets = exercise.sets.map((s, i) => i === index ? { ...s, completed: !s.completed } : s);
                                             setExercises(exercises.map(e => e.id === exercise.id ? { ...e, sets: newSets } : e));
                                         }} />
-                                        <input type="text" placeholder="Вес" value={set.weight} onChange={(e) => {
+                                        <Input type="number" placeholder="Вес" value={set.weight} onChange={(e) => {
                                             const newSets = exercise.sets.map((s, i) => i === index ? { ...s, weight: e.target.value } : s);
                                             setExercises(exercises.map(e => e.id === exercise.id ? { ...e, sets: newSets } : e));
                                         }} />
-                                        <input type="text" placeholder="Повторения" value={set.reps} onChange={(e) => {
+                                        <Input type="number" placeholder="Повторения" value={set.reps} onChange={(e) => {
                                             const newSets = exercise.sets.map((s, i) => i === index ? { ...s, reps: e.target.value } : s);
                                             setExercises(exercises.map(e => e.id === exercise.id ? { ...e, sets: newSets } : e));
                                         }} />
-                                        <input type="text" placeholder="Отдых" value={set.rest} onChange={(e) => {
+                                        <Input type="number" placeholder="Отдых" value={set.rest} onChange={(e) => {
                                             const newSets = exercise.sets.map((s, i) => i === index ? { ...s, rest: e.target.value } : s);
-                                            setExercises(exercises.map(e => e.id === exercise.id ? { ...e, sets: newSets } : e));
-                                        }} />
-                                        <input type="text" placeholder="Комментарий" value={set.comment} onChange={(e) => {
-                                            const newSets = exercise.sets.map((s, i) => i === index ? { ...s, comment: e.target.value } : s);
                                             setExercises(exercises.map(e => e.id === exercise.id ? { ...e, sets: newSets } : e));
                                         }} />
                                     </SetRow>
@@ -144,14 +141,21 @@ const SetRow = styled.div`
     display: flex;
     align-items: center;
     margin-bottom: 10px;
-
-    input {
-        margin-right: 10px;
-        padding: 5px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
 `;
+
+const Checkbox = styled.input`
+    margin-right: 10px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+`
+const Input = styled.input`
+    margin-right: 10px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 30%;
+`
 
 const AddSetButton = styled.button`
     background-color: #007BFF;

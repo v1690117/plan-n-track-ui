@@ -17,7 +17,7 @@ const App: React.FC = () => {
 const WorkoutDetail: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
-  const workout = { id: Number(id), title: `Тренировка ${id}`, date: new Date().toLocaleString() };
+  const workout = { id: Number(id), title: `Тренировка ${id}`, date: Date.now() };
 
   return <WorkoutPage workout={workout} onClose={() => navigate('/')} />;
 };
