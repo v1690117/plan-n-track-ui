@@ -1,45 +1,38 @@
-import React, { useState } from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {formattedDate} from "../utils";
+import {Workout} from "../model/Workout";
+import WorkoutService from "../services/WorkoutService";
 
 const WorkoutListPage: React.FC = () => {
     const navigate = useNavigate();
-    const [workouts, setWorkouts] = useState<{ id: number, title: string, date: number }[]>([
-        {
-            id: 1,
-            title: 'Ноги 1',
-            date: Date.now()
-        },
-        {
-            id: 2,
-            title: 'Руки 1',
-            date: Date.now()
-        },
-        {
-            id: 3,
-            title: 'Грудь',
-            date: Date.now()
-        },
-        {
-            id: 4,
-            title: 'Плечи',
-            date: Date.now()
-        }
+    const [workouts, setWorkouts] = useState<Workout[]>([]);
+    const service = useRef(new WorkoutService());
+
+    const requestWorkouts = useCallback(() => service.current.findAll().then(setWorkouts), [
+        service.current, setWorkouts
     ]);
 
     const handleCreateWorkout = () => {
-        const newWorkout = {
-            id: Date.now(),
-            title: prompt("Введите название тренировки") || `Тренировка ${workouts.length + 1}`,
-            date: Date.now(),
-        };
-        setWorkouts([...workouts, newWorkout]);
+        let title = prompt("Введите название тренировки");
+        if(title) {
+            service.current.create(
+                {
+                    title: title || ''
+                    // date: Date.now(),
+                }
+            ).then(requestWorkouts);
+        }
     };
 
     const handleWorkoutClick = (id: number) => {
         navigate(`/workout/${id}`);
     };
+
+    useEffect(() => {
+        requestWorkouts()
+    }, []);
 
     return (
         <Container>

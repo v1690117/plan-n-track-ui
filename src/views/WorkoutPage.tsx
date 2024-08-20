@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import {formattedDate} from "../utils";
+import {Workout} from "../model/Workout";
 
-const WorkoutPage: React.FC<{ workout: { id: number, title: string, date: number }, onClose: () => void }> = ({ workout, onClose }) => {
+const WorkoutPage: React.FC<{ workout: Workout, onClose: () => void }> = ({ workout, onClose }) => {
     const [exercises, setExercises] = useState<{ id: number, name: string, sets: { weight: string, reps: string, rest: string, completed: boolean, comment: string }[], expanded: boolean }[]>([]);
 
     const handleAddExercise = () => {

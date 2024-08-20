@@ -2,6 +2,7 @@
   "name": "plan-n-track",
   "version": "0.1.0",
   "private": true,
+  "proxy": "https://v1690117.com",
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -10,6 +11,7 @@
     "@types/node": "^17.0.45",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "http-proxy-middleware": "^3.0.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.0",
@@ -53,5 +55,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/http-proxy-middleware": "^1.0.0"
   }
 }
