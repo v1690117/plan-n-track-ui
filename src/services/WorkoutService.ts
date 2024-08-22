@@ -1,7 +1,7 @@
 import {Workout, WorkoutCreation} from "../model/Workout";
 
 export default class WorkoutService {
-    private readonly baseUrl: string = 'https://v1690117.com/pnt-api';
+    private readonly baseUrl: string = '/api';
 
     public async findAll(): Promise<Workout[]> {
         return fetch(`${this.baseUrl}/workouts`).then(r => r.json());
