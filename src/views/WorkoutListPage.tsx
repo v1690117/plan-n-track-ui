@@ -51,7 +51,7 @@ const WorkoutListPage: React.FC = () => {
 };
 
 const Container = styled.div`
-    padding: 20px;
+    height: 100%;
 `;
 
 const Title = styled.h1`

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, useNavigate, useParams } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import WorkoutListPage from './views/WorkoutListPage';
 import WorkoutPage from './views/WorkoutPage';
 
@@ -8,18 +8,10 @@ const App: React.FC = () => {
       <Router>
         <Routes>
           <Route path="/" element={<WorkoutListPage />} />
-          <Route path="/workout/:id" element={<WorkoutDetail />} />
+          <Route path="/workout/:id" element={<WorkoutPage />} />
         </Routes>
       </Router>
   );
-};
-
-const WorkoutDetail: React.FC = () => {
-  const navigate = useNavigate();
-  const { id } = useParams<{ id: string }>();
-  const workout = { id: Number(id), title: `Тренировка ${id}`, date: Date.now() };
-
-  return <WorkoutPage workout={workout} onClose={() => navigate('/')} />;
 };
 
 export default App;

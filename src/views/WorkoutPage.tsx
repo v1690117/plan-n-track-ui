@@ -1,9 +1,18 @@
-import React, { useState } from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import styled from 'styled-components';
 import {formattedDate} from "../utils";
+import {useNavigate, useParams} from "react-router-dom";
+import WorkoutService from "../services/WorkoutService";
 import {Workout} from "../model/Workout";
 
-const WorkoutPage: React.FC<{ workout: Workout, onClose: () => void }> = ({ workout, onClose }) => {
+const WorkoutPage: React.FC = () => {
+    const navigate = useNavigate();
+    const {id} = useParams<{ id: string }>();
+    const service = useRef(new WorkoutService());
+    const [workout, setWorkout] = useState<Workout>();
+
+    const onClose = useCallback(() => navigate('/'), [navigate]);
+
     const [exercises, setExercises] = useState<{ id: number, name: string, sets: { weight: string, reps: string, rest: string, completed: boolean, comment: string }[], expanded: boolean }[]>([]);
 
     const handleAddExercise = () => {
@@ -18,7 +27,7 @@ const WorkoutPage: React.FC<{ workout: Workout, onClose: () => void }> = ({ work
 
     const handleToggleExpand = (id: number) => {
         setExercises(exercises.map(exercise =>
-            exercise.id === id ? { ...exercise, expanded: !exercise.expanded } : exercise
+            exercise.id === id ? {...exercise, expanded: !exercise.expanded} : exercise
         ));
     };
 
@@ -26,16 +35,22 @@ const WorkoutPage: React.FC<{ workout: Workout, onClose: () => void }> = ({ work
         setExercises(exercises.map(exercise =>
             exercise.id === exerciseId ? {
                 ...exercise,
-                sets: [...exercise.sets, { weight: '', reps: '', rest: '', completed: false, comment: '' }]
+                sets: [...exercise.sets, {weight: '', reps: '', rest: '', completed: false, comment: ''}]
             } : exercise
         ));
     };
 
+    useEffect(() => {
+        if(id) {
+            service.current.findById(Number(id)).then(setWorkout);
+        }
+    }, [id]);
+
     return (
         <Container>
             <Header>
-                <WorkoutTitle>{workout.title}</WorkoutTitle>
-                <WorkoutDate>{formattedDate(workout.date)}</WorkoutDate>
+                <WorkoutTitle>{workout?.title}</WorkoutTitle>
+                <WorkoutDate>{workout && formattedDate(workout.date)}</WorkoutDate>
                 <CloseButton onClick={onClose}>Закрыть</CloseButton>
             </Header>
             <ExerciseList>
@@ -50,21 +65,46 @@ const WorkoutPage: React.FC<{ workout: Workout, onClose: () => void }> = ({ work
                                 {exercise.sets.map((set, index) => (
                                     <SetRow key={index}>
                                         <Checkbox type="checkbox" checked={set.completed} onChange={() => {
-                                            const newSets = exercise.sets.map((s, i) => i === index ? { ...s, completed: !s.completed } : s);
-                                            setExercises(exercises.map(e => e.id === exercise.id ? { ...e, sets: newSets } : e));
-                                        }} />
+                                            const newSets = exercise.sets.map((s, i) => i === index ? {
+                                                ...s,
+                                                completed: !s.completed
+                                            } : s);
+                                            setExercises(exercises.map(e => e.id === exercise.id ? {
+                                                ...e,
+                                                sets: newSets
+                                            } : e));
+                                        }}/>
                                         <Input type="number" placeholder="Вес" value={set.weight} onChange={(e) => {
-                                            const newSets = exercise.sets.map((s, i) => i === index ? { ...s, weight: e.target.value } : s);
-                                            setExercises(exercises.map(e => e.id === exercise.id ? { ...e, sets: newSets } : e));
-                                        }} />
-                                        <Input type="number" placeholder="Повторения" value={set.reps} onChange={(e) => {
-                                            const newSets = exercise.sets.map((s, i) => i === index ? { ...s, reps: e.target.value } : s);
-                                            setExercises(exercises.map(e => e.id === exercise.id ? { ...e, sets: newSets } : e));
-                                        }} />
+                                            const newSets = exercise.sets.map((s, i) => i === index ? {
+                                                ...s,
+                                                weight: e.target.value
+                                            } : s);
+                                            setExercises(exercises.map(e => e.id === exercise.id ? {
+                                                ...e,
+                                                sets: newSets
+                                            } : e));
+                                        }}/>
+                                        <Input type="number" placeholder="Повторения" value={set.reps}
+                                               onChange={(e) => {
+                                                   const newSets = exercise.sets.map((s, i) => i === index ? {
+                                                       ...s,
+                                                       reps: e.target.value
+                                                   } : s);
+                                                   setExercises(exercises.map(e => e.id === exercise.id ? {
+                                                       ...e,
+                                                       sets: newSets
+                                                   } : e));
+                                               }}/>
                                         <Input type="number" placeholder="Отдых" value={set.rest} onChange={(e) => {
-                                            const newSets = exercise.sets.map((s, i) => i === index ? { ...s, rest: e.target.value } : s);
-                                            setExercises(exercises.map(e => e.id === exercise.id ? { ...e, sets: newSets } : e));
-                                        }} />
+                                            const newSets = exercise.sets.map((s, i) => i === index ? {
+                                                ...s,
+                                                rest: e.target.value
+                                            } : s);
+                                            setExercises(exercises.map(e => e.id === exercise.id ? {
+                                                ...e,
+                                                sets: newSets
+                                            } : e));
+                                        }}/>
                                     </SetRow>
                                 ))}
                                 <AddSetButton onClick={() => handleAddSet(exercise.id)}>Добавить подход</AddSetButton>

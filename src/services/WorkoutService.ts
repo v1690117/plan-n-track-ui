@@ -3,6 +3,10 @@ import {Workout, WorkoutCreation} from "../model/Workout";
 export default class WorkoutService {
     private readonly baseUrl: string = '/api';
 
+    public async findById(id: number): Promise<Workout> {
+        return fetch(`${this.baseUrl}/workouts/${id}`).then(r => r.json());
+    }
+
     public async findAll(): Promise<Workout[]> {
         return fetch(`${this.baseUrl}/workouts`).then(r => r.json());
     }
