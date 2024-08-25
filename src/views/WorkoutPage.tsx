@@ -4,47 +4,84 @@ import {formattedDate} from "../utils";
 import {useNavigate, useParams} from "react-router-dom";
 import WorkoutService from "../services/WorkoutService";
 import {Workout} from "../model/Workout";
+import {Set} from "../model/Set"
+
+interface Exercise {
+    name: string;
+    sets: Set[];
+    expanded: boolean;
+}
 
 const WorkoutPage: React.FC = () => {
     const navigate = useNavigate();
     const {id} = useParams<{ id: string }>();
     const service = useRef(new WorkoutService());
+    const [exercises, setExercises] = useState<Exercise[]>([]);
     const [workout, setWorkout] = useState<Workout>();
 
     const onClose = useCallback(() => navigate('/'), [navigate]);
 
-    const [exercises, setExercises] = useState<{ id: number, name: string, sets: { weight: string, reps: string, rest: string, completed: boolean, comment: string }[], expanded: boolean }[]>([]);
+    const loadSets = useCallback(async () => {
+        if(!id) {
+            return;
+        }
+        var sets = await service.current.getSets(id);
+        const exercises: Exercise[] = [];
+        sets.forEach(set => {
+            const exercise = exercises.find(e => e.name === set.title);
+            if(exercise) {
+                exercise.sets.push(set);
+            } else {
+                exercises.push({
+                    name: set.title,
+                    expanded: false,
+                    sets: [set]
+                });
+            }
+        })
+        setExercises(exercises);
+    }, [id]);
 
-    const handleAddExercise = () => {
-        const newExercise = {
-            id: Date.now(),
-            name: prompt("Введите название упражнения") || `Упражнение ${exercises.length + 1}`,
-            sets: [],
-            expanded: false
-        };
-        setExercises([...exercises, newExercise]);
-    };
+    const handleAddExercise = useCallback(async () => {
+        const title = prompt("Введите название упражнения");
+        if(id && title) {
+            await service.current.addSet(id, {
+                title,
+                load: 0,
+                reps: 0,
+                rest: 0
+            });
+            loadSets();
+        }
+    }, [id]);
 
-    const handleToggleExpand = (id: number) => {
+    const handleToggleExpand = (name: string) => {
         setExercises(exercises.map(exercise =>
-            exercise.id === id ? {...exercise, expanded: !exercise.expanded} : exercise
+            exercise.name === name ? {...exercise, expanded: !exercise.expanded} : exercise
         ));
     };
 
-    const handleAddSet = (exerciseId: number) => {
-        setExercises(exercises.map(exercise =>
-            exercise.id === exerciseId ? {
-                ...exercise,
-                sets: [...exercise.sets, {weight: '', reps: '', rest: '', completed: false, comment: ''}]
-            } : exercise
-        ));
-    };
+    const handleAddSet = useCallback(async (title: string) => {
+        if(id) {
+            await service.current.addSet(id, {
+                title,
+                load: 0,
+                reps: 0,
+                rest: 0
+            });
+            loadSets();
+        }
+    }, []);
 
     useEffect(() => {
         if(id) {
             service.current.findById(Number(id)).then(setWorkout);
         }
     }, [id]);
+
+    useEffect(() => {
+        loadSets();
+    }, []);
 
     return (
         <Container>
@@ -55,8 +92,8 @@ const WorkoutPage: React.FC = () => {
             </Header>
             <ExerciseList>
                 {exercises.map(exercise => (
-                    <ExerciseCard key={exercise.id}>
-                        <ExerciseHeader onClick={() => handleToggleExpand(exercise.id)}>
+                    <ExerciseCard key={exercise.name}>
+                        <ExerciseHeader onClick={() => handleToggleExpand(exercise.name)}>
                             <ExerciseName>{exercise.name}</ExerciseName>
                             <SetsInfo>{exercise.sets.length}/{exercise.sets.length}</SetsInfo>
                         </ExerciseHeader>
@@ -69,20 +106,20 @@ const WorkoutPage: React.FC = () => {
                                                 ...s,
                                                 completed: !s.completed
                                             } : s);
-                                            setExercises(exercises.map(e => e.id === exercise.id ? {
+                                            setExercises(exercises.map(e => e.name === exercise.name ? {
                                                 ...e,
                                                 sets: newSets
                                             } : e));
                                         }}/>
-                                        <Input type="number" placeholder="Вес" value={set.weight} onChange={(e) => {
+                                        <Input type="number" placeholder="Вес" value={set.load} onChange={(e) => {
                                             const newSets = exercise.sets.map((s, i) => i === index ? {
                                                 ...s,
-                                                weight: e.target.value
+                                                load: e.target.value
                                             } : s);
-                                            setExercises(exercises.map(e => e.id === exercise.id ? {
-                                                ...e,
-                                                sets: newSets
-                                            } : e));
+                                            // setExercises(exercises.map(e => e.name === exercise.name ? {
+                                            //     ...e,
+                                            //     sets: newSets
+                                            // } : e));
                                         }}/>
                                         <Input type="number" placeholder="Повторения" value={set.reps}
                                                onChange={(e) => {
@@ -90,24 +127,24 @@ const WorkoutPage: React.FC = () => {
                                                        ...s,
                                                        reps: e.target.value
                                                    } : s);
-                                                   setExercises(exercises.map(e => e.id === exercise.id ? {
-                                                       ...e,
-                                                       sets: newSets
-                                                   } : e));
+                                                   // setExercises(exercises.map(e => e.id === exercise.id ? {
+                                                   //     ...e,
+                                                   //     sets: newSets
+                                                   // } : e));
                                                }}/>
                                         <Input type="number" placeholder="Отдых" value={set.rest} onChange={(e) => {
                                             const newSets = exercise.sets.map((s, i) => i === index ? {
                                                 ...s,
                                                 rest: e.target.value
                                             } : s);
-                                            setExercises(exercises.map(e => e.id === exercise.id ? {
-                                                ...e,
-                                                sets: newSets
-                                            } : e));
+                                            // setExercises(exercises.map(e => e.id === exercise.id ? {
+                                            //     ...e,
+                                            //     sets: newSets
+                                            // } : e));
                                         }}/>
                                     </SetRow>
                                 ))}
-                                <AddSetButton onClick={() => handleAddSet(exercise.id)}>Добавить подход</AddSetButton>
+                                <AddSetButton onClick={() => handleAddSet(exercise.name)}>Добавить подход</AddSetButton>
                             </ExerciseDetails>
                         )}
                     </ExerciseCard>
