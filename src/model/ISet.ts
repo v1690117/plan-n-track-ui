@@ -14,3 +14,10 @@ export interface ISetCreation {
     reps: number;
     rest: number;
 }
+
+export interface ISetParameters {
+    load?: number;
+    reps?: number;
+    rest?: number;
+    completed?: boolean;
+}

@@ -1,5 +1,4 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import styled from 'styled-components';
 import {formattedDate} from "../../utils";
 import {useNavigate, useParams} from "react-router-dom";
 import WorkoutService from "../../services/WorkoutService";
@@ -13,7 +12,7 @@ import {
     ExerciseCard, ExerciseDetails,
     ExerciseHeader,
     ExerciseList, ExerciseName,
-    Header, Input, SetRow, SetsInfo,
+    Header, SetsInfo,
     WorkoutDate,
     WorkoutTitle
 } from "./WorkoutStyles";
@@ -23,7 +22,6 @@ import Set from "./Set/Set"
 interface Exercise {
     name: string;
     sets: ISet[];
-    expanded: boolean;
 }
 
 const Workout: React.FC = () => {
@@ -32,6 +30,7 @@ const Workout: React.FC = () => {
     const service = useRef(new WorkoutService());
     const [exercises, setExercises] = useState<Exercise[]>([]);
     const [workout, setWorkout] = useState<IWorkout>();
+    const [expansion, setExpansion] = useState<Record<string, boolean>>({});
 
     const onClose = useCallback(() => navigate('/'), [navigate]);
 
@@ -40,20 +39,19 @@ const Workout: React.FC = () => {
             return;
         }
         var sets = await service.current.getSets(id);
-        const exercises: Exercise[] = [];
+        const newExercises: Exercise[] = [];
         sets.forEach(set => {
-            const exercise = exercises.find(e => e.name === set.title);
+            const exercise = newExercises.find(e => e.name === set.title);
             if(exercise) {
                 exercise.sets.push(set);
             } else {
-                exercises.push({
+                newExercises.push({
                     name: set.title,
-                    expanded: false,
                     sets: [set]
                 });
             }
         })
-        setExercises(exercises);
+        setExercises(newExercises);
     }, [id]);
 
     const handleAddExercise = useCallback(async () => {
@@ -70,9 +68,9 @@ const Workout: React.FC = () => {
     }, [id, loadSets]);
 
     const handleToggleExpand = (name: string) => {
-        setExercises(exercises.map(exercise =>
-            exercise.name === name ? {...exercise, expanded: !exercise.expanded} : exercise
-        ));
+        const newExpansion = {...expansion};
+        newExpansion[name] = !newExpansion[name];
+        setExpansion(newExpansion);
     };
 
     const handleAddSet = useCallback(async (title: string) => {
@@ -111,7 +109,7 @@ const Workout: React.FC = () => {
                             <ExerciseName>{exercise.name}</ExerciseName>
                             <SetsInfo>{exercise.sets.length}/{exercise.sets.length}</SetsInfo>
                         </ExerciseHeader>
-                        {exercise.expanded && (
+                        {expansion[exercise.name] && (
                             <ExerciseDetails>
                                 {exercise.sets.map((set, index) => <Set set={set} key={index}/>)}
                                 <AddSetButton onClick={() => handleAddSet(exercise.name)}>Добавить подход</AddSetButton>
