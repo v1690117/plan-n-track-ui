@@ -48,4 +48,4 @@ const WorkoutList: React.FC = () => {
     );
 };
 
-export default WorkoutListWrapper;
+export default WorkoutList;
