@@ -1,4 +1,4 @@
-export interface Set {
+export interface ISet {
     id: number;
     title: string;
     load: number;
@@ -8,7 +8,7 @@ export interface Set {
     completed: boolean;
 }
 
-export interface SetCreation {
+export interface ISetCreation {
     title: string;
     load: number;
     reps: number;

@@ -1,10 +1,10 @@
-export interface Workout {
+export interface IWorkout {
     id: number;
     title: string;
     date: number
 }
 
-export interface WorkoutCreation {
+export interface IWorkoutCreation {
     title: string;
     date?: number
 }
