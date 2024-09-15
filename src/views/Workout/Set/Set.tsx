@@ -19,48 +19,6 @@ function vibrationPattern(index: number) {
     }
 }
 
-function sendNotification() {
-    if ("Notification" in window) {
-        alert(1);
-        console.log(Notification.permission);
-        if (Notification.permission === "granted") {
-            try {
-                alert(4)
-                if ('serviceWorker' in navigator) {
-                    alert(7)
-                    navigator.serviceWorker.ready.then(function(registration) {
-                        alert(8)
-                        try {
-                            registration.showNotification('Hello, world!', {
-                                body: 'Here is the notification body'
-                            });
-                        } catch (e) {
-                            alert(10)
-                        }
-                        alert(9)
-                    }).catch(function(error) {
-                        console.error('Service Worker ready state failed:', error);
-                    });
-                }
-                alert(6);
-            } catch (e) {
-                alert(e);
-            }
-        } else {
-            console.log("User has blocked or not granted permission for notifications");
-            Notification.requestPermission().then(permission => {
-                alert(2);
-                if (permission === "granted") {
-                    alert(3);
-                    console.log("Permission to receive notifications has been granted");
-                }
-            }).catch(e => {
-                alert(e);
-            });
-        }
-    }
-}
-
 interface SetProps {
     set: ISet;
 }
@@ -128,10 +86,9 @@ const Set: React.FC<SetProps> = (props) => {
 
     useEffect(() => {
         if (seconds === 0 && timer) {
-            vibrationPattern(0);
+            vibrationPattern(1);
             clearInterval(timer);
             setTimer(null);
-            sendNotification();
         }
     }, [seconds, timer]);
 
