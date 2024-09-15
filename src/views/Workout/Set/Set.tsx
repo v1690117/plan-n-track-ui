@@ -21,15 +21,19 @@ function vibrationPattern(index: number) {
 
 function sendNotification() {
     if ("Notification" in window) {
+        alert(1);
         Notification.requestPermission().then(permission => {
+            alert(2);
             if (permission === "granted") {
+                alert(3);
                 console.log("Permission to receive notifications has been granted");
             }
+        }).catch(e => {
+            alert(e);
         });
         if (Notification.permission === "granted") {
             const notification = new Notification("Hello, world!", {
                 body: "Here's a notification body",
-                icon: 'url_to_an_icon.png'
             });
 
             notification.onclick = function () {
