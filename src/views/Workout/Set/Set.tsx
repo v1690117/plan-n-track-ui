@@ -26,13 +26,15 @@ function sendNotification() {
         if (Notification.permission === "granted") {
             try {
                 alert(4)
-                const notification = new Notification("Hello, world!", {
-                    body: "Here's a notification body",
-                });
-                alert(5);
-                notification.onclick = function () {
-                    // window.open("https://www.example.com");
-                };
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.ready.then(function(registration) {
+                        registration.showNotification('Hello, world!', {
+                            body: 'Here is the notification body'
+                        });
+                    }).catch(function(error) {
+                        console.error('Service Worker ready state failed:', error);
+                    });
+                }
                 alert(6);
             } catch (e) {
                 alert(e);
