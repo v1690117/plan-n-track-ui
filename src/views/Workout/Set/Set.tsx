@@ -14,6 +14,8 @@ const Set: React.FC<SetProps> = (props) => {
     const [reps, setReps] = useState<number>();
     const [rest, setRest] = useState<number>();
     const [hasChanges, setHasChanges] = useState<boolean>(false);
+    const [seconds, setSeconds] = useState(0);
+    const [timer, setTimer] = useState<any>();
 
     const onCompletionChangedHandler =  async (e: React.ChangeEvent<HTMLInputElement>) => {
         const newChecked = e.target.checked;
@@ -25,6 +27,17 @@ const Set: React.FC<SetProps> = (props) => {
         });
         setHasChanges(false);
         setCompleted(newChecked);
+        if(newChecked && rest) {
+            setSeconds(rest);
+            const interval = setInterval(() => {
+                setSeconds(seconds => seconds - 1);
+                console.log(new Date().getTime());
+            }, 1000);
+            if(timer) {
+                clearInterval(timer);
+            }
+            setTimer(interval);
+        }
     }
     const onLoadChangedHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         setHasChanges(true);
@@ -55,6 +68,13 @@ const Set: React.FC<SetProps> = (props) => {
         setRest(props.set.rest);
     }, [props.set]);
 
+    useEffect(() => {
+        if(seconds === 0 && timer) {
+            clearInterval(timer);
+            setTimer(null);
+        }
+    }, [seconds, timer]);
+
     return <Wrapper>
         <SetRow>
             <Checkbox type="checkbox" checked={completed} onChange={onCompletionChangedHandler}/>
@@ -63,6 +83,9 @@ const Set: React.FC<SetProps> = (props) => {
             <Input type="number" placeholder="Отдых" value={rest || ''} onChange={onRestChangedHandler}/>
         </SetRow>
         {hasChanges && <Button onClick={onClickSaveHandler}>Сохранить</Button>}
+        {seconds>0 && <div>
+            <h1>{seconds} секунд</h1>
+        </div> }
     </Wrapper>
 }
 export default Set;
