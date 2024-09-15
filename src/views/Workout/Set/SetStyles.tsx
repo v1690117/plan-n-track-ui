@@ -42,3 +42,14 @@ export const Button = styled.button`
         background-color: #004085;
     }
 `;
+export const TimerDisplay = styled.span`
+    font-size: 24px;  
+    color: #d9534f;  
+    font-weight: bold;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    width: 100px;  
+    text-align: center;
+    display: block;  
+`;

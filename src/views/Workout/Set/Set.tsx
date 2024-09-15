@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
-import {Button, Checkbox, Input, SetRow, Wrapper} from "./SetStyles";
+import {Button, Checkbox, Input, SetRow, TimerDisplay, Wrapper} from "./SetStyles";
 import {ISet} from "../../../model/ISet";
 import SetService from "../../../services/SetService";
 
@@ -100,9 +100,9 @@ const Set: React.FC<SetProps> = (props) => {
             <Input type="number" placeholder="Отдых" value={rest || ''} onChange={onRestChangedHandler}/>
         </SetRow>
         {hasChanges && <Button onClick={onClickSaveHandler}>Сохранить</Button>}
-        {seconds > 0 && <div>
-            <h1>{seconds} секунд</h1>
-        </div>}
+        {seconds > 0 && <TimerDisplay>
+            <h1>{seconds}</h1>
+        </TimerDisplay>}
     </Wrapper>
 }
 export default Set;
