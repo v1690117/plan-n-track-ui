@@ -22,16 +22,21 @@ function vibrationPattern(index: number) {
 function sendNotification() {
     if ("Notification" in window) {
         alert(1);
+        console.log(Notification.permission);
         if (Notification.permission === "granted") {
-            alert(4)
-            const notification = new Notification("Hello, world!", {
-                body: "Here's a notification body",
-            });
-            alert(5);
-            notification.onclick = function () {
-                // window.open("https://www.example.com");
-            };
-            alert(6);
+            try {
+                alert(4)
+                const notification = new Notification("Hello, world!", {
+                    body: "Here's a notification body",
+                });
+                alert(5);
+                notification.onclick = function () {
+                    // window.open("https://www.example.com");
+                };
+                alert(6);
+            } catch (e) {
+                alert(e);
+            }
         } else {
             console.log("User has blocked or not granted permission for notifications");
             Notification.requestPermission().then(permission => {
