@@ -27,10 +27,17 @@ function sendNotification() {
             try {
                 alert(4)
                 if ('serviceWorker' in navigator) {
+                    alert(7)
                     navigator.serviceWorker.ready.then(function(registration) {
-                        registration.showNotification('Hello, world!', {
-                            body: 'Here is the notification body'
-                        });
+                        alert(8)
+                        try {
+                            registration.showNotification('Hello, world!', {
+                                body: 'Here is the notification body'
+                            });
+                        } catch (e) {
+                            alert(10)
+                        }
+                        alert(9)
                     }).catch(function(error) {
                         console.error('Service Worker ready state failed:', error);
                     });
