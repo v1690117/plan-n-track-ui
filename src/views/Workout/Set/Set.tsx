@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
-import {Checkbox, Input, Wrapper, Button, SetRow} from "./SetStyles";
+import {Button, Checkbox, Input, SetRow, Wrapper} from "./SetStyles";
 import {ISet} from "../../../model/ISet";
 import SetService from "../../../services/SetService";
 
@@ -11,12 +11,33 @@ let patterns = [
     [300, 200, 300, 200, 300, 400, 300, 200, 300, 200, 300, 400, 300, 200, 600, 200] //vibrate "Jingle Bells"
 ];
 
-function vibrationPattern(index: number){
-    if (!window.navigator.vibrate){
+function vibrationPattern(index: number) {
+    if (!window.navigator.vibrate) {
         alert("Your device does not support the Vibration API. Try on an Android phone!");
-    }
-    else {
+    } else {
         window.navigator.vibrate(patterns[index]);
+    }
+}
+
+function sendNotification() {
+    if ("Notification" in window) {
+        Notification.requestPermission().then(permission => {
+            if (permission === "granted") {
+                console.log("Permission to receive notifications has been granted");
+            }
+        });
+        if (Notification.permission === "granted") {
+            const notification = new Notification("Hello, world!", {
+                body: "Here's a notification body",
+                icon: 'url_to_an_icon.png'
+            });
+
+            notification.onclick = function () {
+                // window.open("https://www.example.com");
+            };
+        } else {
+            console.log("User has blocked or not granted permission for notifications");
+        }
     }
 }
 
@@ -34,7 +55,7 @@ const Set: React.FC<SetProps> = (props) => {
     const [seconds, setSeconds] = useState(0);
     const [timer, setTimer] = useState<any>();
 
-    const onCompletionChangedHandler =  async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const onCompletionChangedHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const newChecked = e.target.checked;
         await service.current.updateSet(props.set.id, {
             load,
@@ -44,13 +65,13 @@ const Set: React.FC<SetProps> = (props) => {
         });
         setHasChanges(false);
         setCompleted(newChecked);
-        if(newChecked && rest) {
+        if (newChecked && rest) {
             setSeconds(rest);
             const interval = setInterval(() => {
                 setSeconds(seconds => seconds - 1);
                 console.log(new Date().getTime());
             }, 1000);
-            if(timer) {
+            if (timer) {
                 clearInterval(timer);
             }
             setTimer(interval);
@@ -86,10 +107,11 @@ const Set: React.FC<SetProps> = (props) => {
     }, [props.set]);
 
     useEffect(() => {
-        if(seconds === 0 && timer) {
+        if (seconds === 0 && timer) {
+            vibrationPattern(0);
             clearInterval(timer);
             setTimer(null);
-            vibrationPattern(0);
+            sendNotification();
         }
     }, [seconds, timer]);
 
@@ -101,9 +123,9 @@ const Set: React.FC<SetProps> = (props) => {
             <Input type="number" placeholder="Отдых" value={rest || ''} onChange={onRestChangedHandler}/>
         </SetRow>
         {hasChanges && <Button onClick={onClickSaveHandler}>Сохранить</Button>}
-        {seconds>0 && <div>
+        {seconds > 0 && <div>
             <h1>{seconds} секунд</h1>
-        </div> }
+        </div>}
     </Wrapper>
 }
 export default Set;
