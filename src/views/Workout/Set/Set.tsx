@@ -15,10 +15,16 @@ const Set: React.FC<SetProps> = (props) => {
     const [rest, setRest] = useState<number>();
     const [hasChanges, setHasChanges] = useState<boolean>(false);
 
-    const onCompletionChangedHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setHasChanges(true);
-        setCompleted(e.target.checked);
-        //todo save in this point
+    const onCompletionChangedHandler =  async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newChecked = e.target.checked;
+        await service.current.updateSet(props.set.id, {
+            load,
+            reps,
+            rest,
+            completed: newChecked
+        });
+        setHasChanges(false);
+        setCompleted(newChecked);
     }
     const onLoadChangedHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         setHasChanges(true);
@@ -32,8 +38,8 @@ const Set: React.FC<SetProps> = (props) => {
         setHasChanges(true);
         setRest(Number(e.target.value));
     }
-    const onClickSaveHandler = () => {
-        service.current.updateSet(props.set.id, {
+    const onClickSaveHandler = async () => {
+        await service.current.updateSet(props.set.id, {
             load,
             reps,
             rest,
