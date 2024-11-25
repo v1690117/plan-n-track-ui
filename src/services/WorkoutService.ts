@@ -1,19 +1,20 @@
 import {IWorkout, IWorkoutCreation} from "../model/IWorkout";
 import {ISet, ISetCreation} from "../model/ISet";
+import Service from "./Service";
 
-export default class WorkoutService {
+export default class WorkoutService extends Service {
     private readonly baseUrl: string = '/api';
 
     public async findById(id: number): Promise<IWorkout> {
-        return fetch(`${this.baseUrl}/workouts/${id}`).then(r => r.json());
+        return this.fetchWithRedirect(`${this.baseUrl}/workouts/${id}`).then(r => r.json());
     }
 
     public async findAll(): Promise<IWorkout[]> {
-        return fetch(`${this.baseUrl}/workouts`).then(r => r.json());
+        return this.fetchWithRedirect(`${this.baseUrl}/workouts`).then(r => r.json());
     }
 
     public async create(workout: IWorkoutCreation): Promise<IWorkout> {
-        return fetch(`${this.baseUrl}/workouts`, {
+        return this.fetchWithRedirect(`${this.baseUrl}/workouts`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -23,11 +24,11 @@ export default class WorkoutService {
     }
 
     public async getSets(workout: string): Promise<ISet[]> {
-        return fetch(`${this.baseUrl}/workouts/${workout}/sets`).then(r => r.json());
+        return this.fetchWithRedirect(`${this.baseUrl}/workouts/${workout}/sets`).then(r => r.json());
     }
 
     public async addSet(workout: string, set: ISetCreation): Promise<any> {
-        return fetch(`${this.baseUrl}/workouts/${workout}/sets`,{
+        return this.fetchWithRedirect(`${this.baseUrl}/workouts/${workout}/sets`,{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
