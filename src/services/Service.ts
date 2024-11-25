@@ -4,7 +4,7 @@ export default class Service {
         if (response.status === 401 || response.status === 302) {
             window.location.href = '/login';
         } else if (response.ok) {
-            return await response.json();
+            return response;
         }
         throw new Error('Something went wrong');
     };
