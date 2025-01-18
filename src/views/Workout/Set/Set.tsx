@@ -3,7 +3,7 @@ import {Button, Checkbox, Input, SetRow, TimerDisplay, Wrapper} from "./SetStyle
 import {ISet} from "../../../model/ISet";
 import SetService from "../../../services/SetService";
 
-let patterns = [
+const patterns = [
     2000, //vibrate one time for 2 seconds
     [2000, 1000, 2000, 1000, 2000, 1000, 2000],
     [400, 200, 400, 200, 400, 200, 800, 200, 800, 200, 400, 200, 400, 200, 200, 200], //vibrate "Twinkle, Twinkle, Little Star"
@@ -31,7 +31,7 @@ const Set: React.FC<SetProps> = (props) => {
     const [rest, setRest] = useState<number>();
     const [hasChanges, setHasChanges] = useState<boolean>(false);
     const [seconds, setSeconds] = useState(0);
-    const [timer, setTimer] = useState<any>();
+    const [timer, setTimer] = useState<number|null>();
 
     const onCompletionChangedHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const newChecked = e.target.checked;
