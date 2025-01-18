@@ -6,7 +6,7 @@ RUN npm ci
 COPY . /usr/app/
 RUN npm run build
 
-FROM nginxinc/nginx-unprivileged
+FROM nginx:1.26.2
 EXPOSE 8080
 COPY ./docker/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /usr/app/dist /usr/share/nginx/html
