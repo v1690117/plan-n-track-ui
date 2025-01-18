@@ -1,10 +1,10 @@
-import {ISetCreation, ISetParameters} from "../model/ISet";
+import {ISetParameters} from "../model/ISet";
 import Service from "./Service";
 
 export default class SetService extends Service {
     private readonly baseUrl: string = '/api';
 
-    public async updateSet(setId: number, parameters: ISetParameters): Promise<any> {
+    public async updateSet(setId: number, parameters: ISetParameters): Promise<unknown> {
         return this.fetchWithRedirect(`${this.baseUrl}/sets/${setId}`,{
             method: 'PATCH',
             headers: {

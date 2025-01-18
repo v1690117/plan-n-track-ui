@@ -38,7 +38,7 @@ const Workout: React.FC = () => {
         if(!id) {
             return;
         }
-        var sets = await service.current.getSets(id);
+        const sets = await service.current.getSets(id);
         const newExercises: Exercise[] = [];
         sets.forEach(set => {
             const exercise = newExercises.find(e => e.name === set.title);

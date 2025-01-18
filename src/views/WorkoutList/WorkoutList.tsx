@@ -14,7 +14,7 @@ const WorkoutList: React.FC = () => {
     const requestWorkouts = useCallback(() => service.current.findAll().then(setWorkouts), []);
 
     const handleCreateWorkout = () => {
-        let title = prompt("Введите название тренировки");
+        const title = prompt("Введите название тренировки");
         if(title) {
             service.current.create(
                 {
