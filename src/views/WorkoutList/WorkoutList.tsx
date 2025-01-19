@@ -1,17 +1,18 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 
 import {useNavigate} from 'react-router-dom';
 import {formattedDate} from "../../utils";
-import {IWorkout} from "../../model/IWorkout";
 import WorkoutService from "../../services/WorkoutService";
 import {Container, CreateButton, Title, WorkoutDate, WorkoutListWrapper, WorkoutTitle, WorkoutItem} from "./WorkoutListStyles";
+import useAppStore from "../../store/store.ts";
 
 const WorkoutList: React.FC = () => {
     const navigate = useNavigate();
-    const [workouts, setWorkouts] = useState<IWorkout[]>([]);
+    // const [workouts, setWorkouts] = useState<IWorkout[]>([]);
     const service = useRef(new WorkoutService());
 
-    const requestWorkouts = useCallback(() => service.current.findAll().then(setWorkouts), []);
+    const workouts = useAppStore(s => s.workouts);
+    const loadWorkouts = useAppStore(s => s.loadWorkouts);
 
     const handleCreateWorkout = () => {
         const title = prompt("Введите название тренировки");
@@ -20,7 +21,7 @@ const WorkoutList: React.FC = () => {
                 {
                     title
                 }
-            ).then(requestWorkouts);
+            ).then(loadWorkouts);
         }
     };
 
@@ -29,8 +30,8 @@ const WorkoutList: React.FC = () => {
     };
 
     useEffect(() => {
-        requestWorkouts()
-    }, [requestWorkouts]);
+        loadWorkouts()
+    }, [loadWorkouts]);
 
     return (
         <Container>
