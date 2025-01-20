@@ -1,33 +1,27 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useCallback, useEffect} from 'react';
 
 import {useNavigate} from 'react-router-dom';
 import {formattedDate} from "../../utils";
-import WorkoutService from "../../services/WorkoutService";
 import {Container, CreateButton, Title, WorkoutDate, WorkoutListWrapper, WorkoutTitle, WorkoutItem} from "./WorkoutListStyles";
 import useAppStore from "../../store/store.ts";
 
 const WorkoutList: React.FC = () => {
     const navigate = useNavigate();
-    // const [workouts, setWorkouts] = useState<IWorkout[]>([]);
-    const service = useRef(new WorkoutService());
 
     const workouts = useAppStore(s => s.workouts);
     const loadWorkouts = useAppStore(s => s.loadWorkouts);
+    const addWorkout = useAppStore(s => s.addWorkout);
 
-    const handleCreateWorkout = () => {
-        const title = prompt("Введите название тренировки");
+    const handleCreateWorkout = useCallback(async () => {
+        const title = prompt("Введите название тренировки")?.trim();
         if(title) {
-            service.current.create(
-                {
-                    title
-                }
-            ).then(loadWorkouts);
+           await addWorkout({title});
         }
-    };
+    }, [addWorkout]);
 
-    const handleWorkoutClick = (id: number) => {
+    const handleWorkoutClick = useCallback((id: number) => {
         navigate(`/workout/${id}`);
-    };
+    }, [navigate]);
 
     useEffect(() => {
         loadWorkouts()
