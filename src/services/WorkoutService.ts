@@ -23,11 +23,11 @@ export default class WorkoutService extends Service {
         }).then(r => r.json());
     }
 
-    public async getSets(workout: string): Promise<ISet[]> {
+    public async getSets(workout: number): Promise<ISet[]> {
         return this.fetchWithRedirect(`${this.baseUrl}/workouts/${workout}/sets`).then(r => r.json());
     }
 
-    public async addSet(workout: string, set: ISetCreation): Promise<unknown> {
+    public async addSet(workout: number, set: ISetCreation): Promise<unknown> {
         return this.fetchWithRedirect(`${this.baseUrl}/workouts/${workout}/sets`,{
             method: 'POST',
             headers: {

@@ -1,23 +1,25 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {formattedDate} from "../../utils";
 import {useNavigate, useParams} from "react-router-dom";
-import WorkoutService from "../../services/WorkoutService";
-import {IWorkout} from "../../model/IWorkout";
 import {ISet} from "../../model/ISet"
 import {
     AddExerciseButton,
     AddSetButton,
     CloseButton,
     Container,
-    ExerciseCard, ExerciseDetails,
+    ExerciseCard,
+    ExerciseDetails,
     ExerciseHeader,
-    ExerciseList, ExerciseName,
-    Header, SetsInfo,
+    ExerciseList,
+    ExerciseName,
+    Header,
+    SetsInfo,
     WorkoutDate,
     WorkoutTitle
 } from "./WorkoutStyles";
 
 import Set from "./Set/Set"
+import useAppStore from "../../store/store.ts";
 
 interface Exercise {
     name: string;
@@ -27,22 +29,21 @@ interface Exercise {
 const Workout: React.FC = () => {
     const navigate = useNavigate();
     const {id} = useParams<{ id: string }>();
-    const service = useRef(new WorkoutService());
-    const [exercises, setExercises] = useState<Exercise[]>([]);
-    const [workout, setWorkout] = useState<IWorkout>();
-    const [expansion, setExpansion] = useState<Record<string, boolean>>({});
+    const workout = useAppStore(state => state.workout);
+    const sets = useAppStore(state => state.sets);
+    const loadWorkout = useAppStore(state => state.loadWorkout);
+    const addSet = useAppStore(state => state.addSet);
+    const unselectWorkout = useAppStore(state => state.unselectWorkout);
+    const [expansion, setExpansion] = useState<Record<string, boolean>>({}); // todo use store?
 
-    const onClose = useCallback(() => navigate('/'), [navigate]);
-
-    const loadSets = useCallback(async () => {
-        if(!id) {
-            return;
+    const exercises = useMemo(() => {
+        if (!id) { // todo needed?
+            return [];
         }
-        const sets = await service.current.getSets(id);
         const newExercises: Exercise[] = [];
         sets.forEach(set => {
             const exercise = newExercises.find(e => e.name === set.title);
-            if(exercise) {
+            if (exercise) {
                 exercise.sets.push(set);
             } else {
                 newExercises.push({
@@ -51,21 +52,22 @@ const Workout: React.FC = () => {
                 });
             }
         })
-        setExercises(newExercises);
-    }, [id]);
+        return newExercises;
+    }, [id, sets]);
+
+    const onClose = useCallback(() => navigate('/'), [navigate]);
 
     const handleAddExercise = useCallback(async () => {
         const title = prompt("Введите название упражнения");
-        if(id && title) {
-            await service.current.addSet(id, {
+        if (title) {
+            await addSet({
                 title,
                 load: 0,
                 reps: 0,
                 rest: 0
             });
-            loadSets();
         }
-    }, [id, loadSets]);
+    }, [addSet]);
 
     const handleToggleExpand = (name: string) => {
         const newExpansion = {...expansion};
@@ -74,51 +76,50 @@ const Workout: React.FC = () => {
     };
 
     const handleAddSet = useCallback(async (title: string) => {
-        if(id) {
-            await service.current.addSet(id, {
-                title,
-                load: 0,
-                reps: 0,
-                rest: 0
-            });
-            loadSets();
-        }
-    }, [id, loadSets]);
+        await addSet({
+            title,
+            load: 0,
+            reps: 0,
+            rest: 0
+        });
+    }, [addSet]);
 
     useEffect(() => {
-        if(id) {
-            service.current.findById(Number(id)).then(setWorkout);
+        if (id) {
+            loadWorkout(Number(id));
         }
-    }, [id]);
+    }, [id, loadWorkout]);
 
-    useEffect(() => {
-        loadSets();
-    }, [loadSets]);
+    useEffect(() => () => unselectWorkout(), [unselectWorkout]);
 
     return (
         <Container>
-            <Header>
-                <WorkoutTitle>{workout?.title}</WorkoutTitle>
-                <WorkoutDate>{workout && formattedDate(workout.date)}</WorkoutDate>
-                <CloseButton onClick={onClose}>Закрыть</CloseButton>
-            </Header>
-            <ExerciseList>
-                {exercises.map(exercise => (
-                    <ExerciseCard key={exercise.name}>
-                        <ExerciseHeader onClick={() => handleToggleExpand(exercise.name)}>
-                            <ExerciseName>{exercise.name}</ExerciseName>
-                            <SetsInfo>{exercise.sets.length}/{exercise.sets.length}</SetsInfo>
-                        </ExerciseHeader>
-                        {expansion[exercise.name] && (
-                            <ExerciseDetails>
-                                {exercise.sets.map((set, index) => <Set set={set} key={index}/>)}
-                                <AddSetButton onClick={() => handleAddSet(exercise.name)}>Добавить подход</AddSetButton>
-                            </ExerciseDetails>
-                        )}
-                    </ExerciseCard>
-                ))}
-            </ExerciseList>
-            <AddExerciseButton onClick={handleAddExercise}>Добавить упражнение</AddExerciseButton>
+            {workout && <>
+                <Header>
+                    <WorkoutTitle>{workout?.title}</WorkoutTitle>
+                    <WorkoutDate>{workout && formattedDate(workout.date)}</WorkoutDate>
+                    <CloseButton onClick={onClose}>Закрыть</CloseButton>
+                </Header>
+                <ExerciseList>
+                    {exercises.map(exercise => (
+                        // todo move to component
+                        <ExerciseCard key={exercise.name}>
+                            <ExerciseHeader onClick={() => handleToggleExpand(exercise.name)}>
+                                <ExerciseName>{exercise.name}</ExerciseName>
+                                <SetsInfo>{exercise.sets.length}/{exercise.sets.length}</SetsInfo>
+                            </ExerciseHeader>
+                            {expansion[exercise.name] && (
+                                <ExerciseDetails>
+                                    {exercise.sets.map((set, index) => <Set set={set} key={index}/>)}
+                                    <AddSetButton onClick={() => handleAddSet(exercise.name)}>Добавить
+                                        подход</AddSetButton>
+                                </ExerciseDetails>
+                            )}
+                        </ExerciseCard>
+                    ))}
+                </ExerciseList>
+                <AddExerciseButton onClick={handleAddExercise}>Добавить упражнение</AddExerciseButton>
+            </>}
         </Container>
     );
 };
