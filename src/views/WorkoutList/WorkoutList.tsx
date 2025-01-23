@@ -4,6 +4,7 @@ import {useNavigate} from 'react-router-dom';
 import {formattedDate} from "../../utils";
 import {Container, CreateButton, Title, WorkoutDate, WorkoutListWrapper, WorkoutTitle, WorkoutItem} from "./WorkoutListStyles";
 import useAppStore from "../../store/store.ts";
+import Timer from "../Timer/Timer.tsx";
 
 const WorkoutList: React.FC = () => {
     const navigate = useNavigate();
@@ -39,6 +40,7 @@ const WorkoutList: React.FC = () => {
                 ))}
             </WorkoutListWrapper>
             <CreateButton onClick={handleCreateWorkout}>Создать тренировку</CreateButton>
+            <Timer/>
         </Container>
     );
 };
