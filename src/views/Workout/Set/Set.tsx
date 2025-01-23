@@ -1,7 +1,7 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Button, Checkbox, Input, SetRow, TimerDisplay, Wrapper} from "./SetStyles";
 import {ISet} from "../../../model/ISet";
-import SetService from "../../../services/SetService";
+import useAppStore from "../../../store/store.ts";
 
 const patterns = [
     2000, //vibrate one time for 2 seconds
@@ -24,7 +24,6 @@ interface SetProps {
 }
 
 const Set: React.FC<SetProps> = (props) => {
-    const service = useRef(new SetService());
     const [completed, setCompleted] = useState<boolean>();
     const [load, setLoad] = useState<number>();
     const [reps, setReps] = useState<number>();
@@ -32,10 +31,11 @@ const Set: React.FC<SetProps> = (props) => {
     const [hasChanges, setHasChanges] = useState<boolean>(false);
     const [seconds, setSeconds] = useState(0);
     const [timer, setTimer] = useState<number|null>();
+    const updateSet = useAppStore(s => s.updateSet);
 
     const onCompletionChangedHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const newChecked = e.target.checked;
-        await service.current.updateSet(props.set.id, {
+        await updateSet(props.set.id, {
             load,
             reps,
             rest,
@@ -68,7 +68,7 @@ const Set: React.FC<SetProps> = (props) => {
         setRest(Number(e.target.value));
     }
     const onClickSaveHandler = async () => {
-        await service.current.updateSet(props.set.id, {
+        await updateSet(props.set.id, {
             load,
             reps,
             rest,

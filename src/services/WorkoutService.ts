@@ -27,8 +27,8 @@ export default class WorkoutService extends Service {
         return this.fetchWithRedirect(`${this.baseUrl}/workouts/${workout}/sets`).then(r => r.json());
     }
 
-    public async addSet(workout: number, set: ISetCreation): Promise<unknown> {
-        return this.fetchWithRedirect(`${this.baseUrl}/workouts/${workout}/sets`,{
+    public async addSet(workout: number, set: ISetCreation): Promise<void> {
+        await this.fetchWithRedirect(`${this.baseUrl}/workouts/${workout}/sets`,{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

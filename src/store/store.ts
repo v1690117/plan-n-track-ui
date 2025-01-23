@@ -1,7 +1,8 @@
 import {create} from "zustand/react";
 import {IWorkout, IWorkoutCreation} from "../model/IWorkout.ts";
 import WorkoutService from "../services/WorkoutService.ts";
-import {ISet, ISetCreation} from "../model/ISet.ts";
+import {ISet, ISetCreation, ISetParameters} from "../model/ISet.ts";
+import SetService from "../services/SetService.ts";
 
 interface AppStore {
     workouts: IWorkout[];
@@ -11,11 +12,13 @@ interface AppStore {
     addWorkout: (wo: IWorkoutCreation) => Promise<void>;
     loadWorkout: (workout: number) => Promise<void>;
     // loadSets: (workout: number) => Promise<ISet[]>;
-    addSet: (set: ISetCreation) => Promise<void>;
+    addSet: (newSet: ISetCreation) => Promise<void>;
+    updateSet: (setId: number, parameters: ISetParameters) => Promise<void>;
     unselectWorkout: () => void;
 }
 
 const wsService = new WorkoutService();
+const setService = new SetService();
 
 const useAppStore = create<AppStore>()((set) => ({
     workouts: [],
@@ -53,6 +56,9 @@ const useAppStore = create<AppStore>()((set) => ({
             const sets = await wsService.getSets(workout);
             set({ sets });
         }
+    },
+    updateSet: async (setId: number, parameters: ISetParameters) => {
+        return setService.updateSet(setId, parameters);
     },
     unselectWorkout: () => {
         set({

@@ -4,8 +4,8 @@ import Service from "./Service";
 export default class SetService extends Service {
     private readonly baseUrl: string = '/api';
 
-    public async updateSet(setId: number, parameters: ISetParameters): Promise<unknown> {
-        return this.fetchWithRedirect(`${this.baseUrl}/sets/${setId}`,{
+    public async updateSet(setId: number, parameters: ISetParameters): Promise<void> {
+        await this.fetchWithRedirect(`${this.baseUrl}/sets/${setId}`,{
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'
