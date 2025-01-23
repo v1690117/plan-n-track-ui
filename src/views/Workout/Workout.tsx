@@ -20,6 +20,7 @@ import {
 
 import Set from "./Set/Set"
 import useAppStore from "../../store/store.ts";
+import Timer from "../Timer/Timer.tsx";
 
 interface Exercise {
     name: string;
@@ -120,6 +121,7 @@ const Workout: React.FC = () => {
                 </ExerciseList>
                 <AddExerciseButton onClick={handleAddExercise}>Добавить упражнение</AddExerciseButton>
             </>}
+            <Timer/>
         </Container>
     );
 };

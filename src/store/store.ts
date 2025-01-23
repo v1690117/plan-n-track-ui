@@ -15,6 +15,11 @@ interface AppStore {
     addSet: (newSet: ISetCreation) => Promise<void>;
     updateSet: (setId: number, parameters: ISetParameters) => Promise<void>;
     unselectWorkout: () => void;
+
+    timer: number | null;
+    seconds: number;
+    setTimer: (seconds: number) => void;
+    resetTimer: () => void;
 }
 
 const wsService = new WorkoutService();
@@ -35,7 +40,7 @@ const useAppStore = create<AppStore>()((set) => ({
     loadWorkouts: async () => {
         try {
             const workouts = await wsService.findAll();
-            set({ workouts });
+            set({workouts});
         } catch (error) {
             alert(error);
         }
@@ -44,17 +49,17 @@ const useAppStore = create<AppStore>()((set) => ({
         try {
             const workout = await wsService.findById(workoutId);
             const sets = await wsService.getSets(workoutId);
-            set({ workout, sets });
+            set({workout, sets});
         } catch (error) {
             alert(error);
         }
     },
     addSet: async (newSet: ISetCreation) => {
         const workout = useAppStore.getState().workout?.id;
-        if(workout) {
+        if (workout) {
             await wsService.addSet(workout, newSet);
             const sets = await wsService.getSets(workout);
-            set({ sets });
+            set({sets});
         }
     },
     updateSet: async (setId: number, parameters: ISetParameters) => {
@@ -66,6 +71,46 @@ const useAppStore = create<AppStore>()((set) => ({
             sets: []
         });
     },
+
+    timer: null,
+    seconds: 0,
+    setTimer: (seconds) => {
+        if (!seconds || seconds < 0) {
+            return;
+        }
+        let left = seconds;
+        const interval = setInterval(() => {
+            if (left === 0) {
+                const timer = useAppStore.getState().timer;
+                if (timer) {
+                    useAppStore.getState().resetTimer();
+                    const patterns = [
+                        2000, // one time for 2 seconds
+                        [400, 200, 400, 200, 400, 200, 800, 200, 800, 200, 400, 200, 400, 200, 200, 200], // "Twinkle, Twinkle, Little Star"
+                    ];
+                    function vibrationPattern(index: number) {
+                        if (!window.navigator.vibrate) {
+                            alert("Your device does not support the Vibration API. Try on an Android phone!");
+                        } else {
+                            window.navigator.vibrate(patterns[index]);
+                        }
+                    }
+                    vibrationPattern(1);
+                }
+            } else {
+                set({seconds: --left});
+            }
+        }, 1000);
+        useAppStore.getState().resetTimer();
+        set({timer: interval});
+    },
+    resetTimer: () => {
+        const timer = useAppStore.getState().timer;
+        if(timer) {
+            clearInterval(timer);
+            set({timer: null, seconds: 0});
+        }
+    }
 }));
 
 export default useAppStore;
