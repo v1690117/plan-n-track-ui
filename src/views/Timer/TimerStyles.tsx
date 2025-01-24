@@ -26,3 +26,21 @@ export const StopButton = styled.button`
     cursor: pointer;
     width: 100px; /* Фиксированная ширина для кнопки */
 `;
+
+export const StartButton = styled.button`
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100px; /* Фиксированная ширина для кнопки */
+`;
+
+export const Input = styled.input`
+    margin-right: 10px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 30%;
+`
