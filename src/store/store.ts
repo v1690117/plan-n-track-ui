@@ -11,7 +11,6 @@ interface AppStore {
     loadWorkouts: () => Promise<void>;
     addWorkout: (wo: IWorkoutCreation) => Promise<void>;
     loadWorkout: (workout: number) => Promise<void>;
-    // loadSets: (workout: number) => Promise<ISet[]>;
     addSet: (newSet: ISetCreation) => Promise<void>;
     updateSet: (setId: number, parameters: ISetParameters) => Promise<void>;
     unselectWorkout: () => void;
@@ -84,18 +83,11 @@ const useAppStore = create<AppStore>()((set) => ({
                 const timer = useAppStore.getState().timer;
                 if (timer) {
                     useAppStore.getState().resetTimer();
-                    const patterns = [
-                        2000, // one time for 2 seconds
-                        [400, 200, 400, 200, 400, 200, 800, 200, 800, 200, 400, 200, 400, 200, 200, 200], // "Twinkle, Twinkle, Little Star"
-                    ];
-                    function vibrationPattern(index: number) {
-                        if (!window.navigator.vibrate) {
-                            alert("Your device does not support the Vibration API. Try on an Android phone!");
-                        } else {
-                            window.navigator.vibrate(patterns[index]);
-                        }
+                    if (!window.navigator.vibrate) {
+                        alert("Your device does not support the Vibration API. Try on an Android phone!");
+                    } else {
+                        window.navigator.vibrate(1500);
                     }
-                    vibrationPattern(1);
                 }
             } else {
                 set({seconds: --left});
@@ -106,7 +98,7 @@ const useAppStore = create<AppStore>()((set) => ({
     },
     resetTimer: () => {
         const timer = useAppStore.getState().timer;
-        if(timer) {
+        if (timer) {
             clearInterval(timer);
             set({timer: null, seconds: 0});
         }
