@@ -62,7 +62,12 @@ const useAppStore = create<AppStore>()((set) => ({
         }
     },
     updateSet: async (setId: number, parameters: ISetParameters) => {
-        return setService.updateSet(setId, parameters);
+        await setService.updateSet(setId, parameters);
+        const workout = useAppStore.getState().workout?.id;
+        if (workout) {
+            const sets = await wsService.getSets(workout);
+            set({sets});
+        }
     },
     unselectWorkout: () => {
         set({

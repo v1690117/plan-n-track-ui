@@ -1,24 +1,19 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {formattedDate} from "../../utils";
 import {useNavigate, useParams} from "react-router-dom";
 import {ISet} from "../../model/ISet"
 import {
     AddExerciseButton,
-    AddSetButton,
     CloseButton,
     Container,
-    ExerciseCard,
-    ExerciseDetails,
-    ExerciseHeader,
     ExerciseList,
-    ExerciseName,
     Header,
-    SetsInfo,
     WorkoutDate,
     WorkoutTitle
 } from "./WorkoutStyles";
 
-import Set from "./Set/Set"
+import Exercise from "./Exercise/Exercise.tsx";
+
 import useAppStore from "../../store/store.ts";
 import Timer from "../Timer/Timer.tsx";
 
@@ -35,7 +30,6 @@ const Workout: React.FC = () => {
     const loadWorkout = useAppStore(state => state.loadWorkout);
     const addSet = useAppStore(state => state.addSet);
     const unselectWorkout = useAppStore(state => state.unselectWorkout);
-    const [expansion, setExpansion] = useState<Record<string, boolean>>({}); // todo use store?
 
     const exercises = useMemo(() => {
         if (!id) { // todo needed?
@@ -70,21 +64,6 @@ const Workout: React.FC = () => {
         }
     }, [addSet]);
 
-    const handleToggleExpand = (name: string) => {
-        const newExpansion = {...expansion};
-        newExpansion[name] = !newExpansion[name];
-        setExpansion(newExpansion);
-    };
-
-    const handleAddSet = useCallback(async (title: string) => {
-        await addSet({
-            title,
-            load: 0,
-            reps: 0,
-            rest: 0
-        });
-    }, [addSet]);
-
     useEffect(() => {
         if (id) {
             loadWorkout(Number(id));
@@ -92,6 +71,10 @@ const Workout: React.FC = () => {
     }, [id, loadWorkout]);
 
     useEffect(() => () => unselectWorkout(), [unselectWorkout]);
+
+    const exercisesComponent = useMemo(() => <ExerciseList>
+        {exercises.map(exercise => <Exercise name={exercise.name} sets={exercise.sets} key={exercise.name}/>)}
+    </ExerciseList>, [exercises]);
 
     return (
         <Container>
@@ -101,24 +84,7 @@ const Workout: React.FC = () => {
                     <WorkoutDate>{workout && formattedDate(workout.date)}</WorkoutDate>
                     <CloseButton onClick={onClose}>Закрыть</CloseButton>
                 </Header>
-                <ExerciseList>
-                    {exercises.map(exercise => (
-                        // todo move to component
-                        <ExerciseCard key={exercise.name}>
-                            <ExerciseHeader onClick={() => handleToggleExpand(exercise.name)}>
-                                <ExerciseName>{exercise.name}</ExerciseName>
-                                <SetsInfo>{exercise.sets.length}/{exercise.sets.length}</SetsInfo>
-                            </ExerciseHeader>
-                            {expansion[exercise.name] && (
-                                <ExerciseDetails>
-                                    {exercise.sets.map((set, index) => <Set set={set} key={index}/>)}
-                                    <AddSetButton onClick={() => handleAddSet(exercise.name)}>Добавить
-                                        подход</AddSetButton>
-                                </ExerciseDetails>
-                            )}
-                        </ExerciseCard>
-                    ))}
-                </ExerciseList>
+                {exercisesComponent}
                 <AddExerciseButton onClick={handleAddExercise}>Добавить упражнение</AddExerciseButton>
             </>}
             <Timer/>
