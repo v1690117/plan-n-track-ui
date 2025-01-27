@@ -7,7 +7,7 @@ import {
     SetsInfo
 } from "./ExerciseStyles.tsx";
 import Set from "../Set/Set.tsx";
-import React, {useCallback, useMemo, useState} from "react";
+import React, {useCallback, useState} from "react";
 import {ISet} from "../../../model/ISet.ts";
 import useAppStore from "../../../store/store.ts";
 
@@ -16,11 +16,9 @@ interface ExerciseProps {
     sets: ISet[];
 }
 
-const Exercise: React.FC<ExerciseProps> = (exercise) => {
+const Exercise: React.FC<ExerciseProps> = ({name, sets}) => {
     const [expansion, setExpansion] = useState<Record<string, boolean>>({}); // todo use store?
     const addSet = useAppStore(state => state.addSet);
-
-    const completedExercices = useMemo(() => exercise.sets?.filter(e => e.completed).length, [exercise.sets.length]);
 
     const handleToggleExpand = (name: string) => {
         const newExpansion = {...expansion};
@@ -37,16 +35,15 @@ const Exercise: React.FC<ExerciseProps> = (exercise) => {
         });
     }, [addSet]);
 
-    return <ExerciseCard key={exercise.name}>
-        <ExerciseHeader onClick={() => handleToggleExpand(exercise.name)}>
-            <ExerciseName>{exercise.name}</ExerciseName>
-            <SetsInfo>{completedExercices}/{exercise.sets.length}</SetsInfo>
+    return <ExerciseCard key={name}>
+        <ExerciseHeader onClick={() => handleToggleExpand(name)}>
+            <ExerciseName>{name}</ExerciseName>
+            <SetsInfo>{sets?.filter(e => e.completed).length}/{sets.length}</SetsInfo>
         </ExerciseHeader>
-        {expansion[exercise.name] && (
+        {expansion[name] && (
             <ExerciseDetails>
-                {exercise.sets.map((set, index) => <Set set={set} key={index}/>)}
-                <AddSetButton onClick={() => handleAddSet(exercise.name)}>Добавить
-                    подход</AddSetButton>
+                {sets.map((set, index) => <Set set={set} key={index}/>)}
+                <AddSetButton onClick={() => handleAddSet(name)}>Добавить подход</AddSetButton>
             </ExerciseDetails>
         )}
     </ExerciseCard>
