@@ -21,6 +21,8 @@ export const ExerciseName = styled.div`
 
 export const SetsInfo = styled.div`
     color: #888;
+    display: flex;
+    gap: 8px;
 `;
 
 export const ExerciseDetails = styled.div`
