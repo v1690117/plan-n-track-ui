@@ -35,9 +35,11 @@ const Exercise: React.FC<ExerciseProps> = ({name, sets}) => {
         });
     }, [addSet]);
 
+    const totalWeight = sets?.filter(e => e.completed).reduce((acc, cur) => acc + cur.load * cur.reps, 0);
+
     return <ExerciseCard key={name}>
         <ExerciseHeader onClick={() => handleToggleExpand(name)}>
-            <ExerciseName>{name}</ExerciseName>
+            <ExerciseName>{name} {totalWeight > 0 && `(${totalWeight})`}</ExerciseName>
             <SetsInfo>{sets?.filter(e => e.completed).length}/{sets.length}</SetsInfo>
         </ExerciseHeader>
         {expansion[name] && (
