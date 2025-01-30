@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Button, Checkbox, Input, SetRow, Wrapper} from "./SetStyles";
+import {Button, Checkbox, DeleteButton, Input, SetRow, Wrapper} from "./SetStyles";
 import {ISet} from "../../../model/ISet";
 import useAppStore from "../../../store/store.ts";
 
@@ -15,6 +15,7 @@ const Set: React.FC<SetProps> = (props) => {
     const [hasChanges, setHasChanges] = useState<boolean>(false);
 
     const updateSet = useAppStore(s => s.updateSet);
+    const deleteSet = useAppStore(s => s.deleteSet);
     const setTimer = useAppStore(s => s.setTimer);
 
     const onCompletionChangedHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,6 +53,11 @@ const Set: React.FC<SetProps> = (props) => {
         })
         setHasChanges(false);
     }
+    const onDeleteClickHandler = () => {
+        if (confirm("Are you sure?")) {
+            deleteSet(props.set.id);
+        }
+    }
 
     useEffect(() => { // todo do it without props-state connection
         setCompleted(props.set.completed);
@@ -66,6 +72,7 @@ const Set: React.FC<SetProps> = (props) => {
             <Input type="number" placeholder="Вес" value={load || ''} onChange={onLoadChangedHandler}/>
             <Input type="number" placeholder="Повторения" value={reps || ''} onChange={onRepsChangeHandler}/>
             <Input type="number" placeholder="Отдых" value={rest || ''} onChange={onRestChangedHandler}/>
+            <DeleteButton onClick={onDeleteClickHandler}>Delete</DeleteButton>
         </SetRow>
         {hasChanges && <Button onClick={onClickSaveHandler}>Сохранить</Button>}
     </Wrapper>
