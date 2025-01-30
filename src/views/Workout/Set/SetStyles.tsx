@@ -43,3 +43,10 @@ export const Button = styled.button`
     }
 `;
 
+export const DeleteButton = styled.button`
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+`;

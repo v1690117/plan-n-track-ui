@@ -13,6 +13,7 @@ interface AppStore {
     loadWorkout: (workout: number) => Promise<void>;
     addSet: (newSet: ISetCreation) => Promise<void>;
     updateSet: (setId: number, parameters: ISetParameters) => Promise<void>;
+    deleteSet: (setId: number) => Promise<void>;
     unselectWorkout: () => void;
 
     timer: number | null;
@@ -57,6 +58,14 @@ const useAppStore = create<AppStore>()((set) => ({
         const workout = useAppStore.getState().workout?.id;
         if (workout) {
             await wsService.addSet(workout, newSet);
+            const sets = await wsService.getSets(workout);
+            set({sets});
+        }
+    },
+    deleteSet: async (setId: number) => {
+        const workout = useAppStore.getState().workout?.id;
+        if (workout) {
+            await setService.deleteSet(setId);
             const sets = await wsService.getSets(workout);
             set({sets});
         }
