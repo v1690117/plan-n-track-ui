@@ -6,6 +6,7 @@ import {
     AddExerciseButton,
     CloseButton,
     Container,
+    DeleteWorkoutButton,
     ExerciseList,
     Header,
     WorkoutDate,
@@ -30,6 +31,7 @@ const Workout: React.FC = () => {
     const loadWorkout = useAppStore(state => state.loadWorkout);
     const addSet = useAppStore(state => state.addSet);
     const unselectWorkout = useAppStore(state => state.unselectWorkout);
+    const deleteWorkout = useAppStore(state => state.deleteWorkout);
 
     const exercises = useMemo(() => {
         if (!id) { // todo needed?
@@ -64,6 +66,13 @@ const Workout: React.FC = () => {
         }
     }, [addSet]);
 
+    const handleDeleteWorkout = useCallback(async () => {
+        if (confirm("Вся информация о тренировке будет удалена. Продолжить?")) {
+            await deleteWorkout(Number(id));
+            navigate('/');
+        }
+    }, [deleteWorkout, id, navigate]);
+
     useEffect(() => {
         if (id) {
             loadWorkout(Number(id));
@@ -86,6 +95,7 @@ const Workout: React.FC = () => {
                 </Header>
                 {exercisesComponent}
                 <AddExerciseButton onClick={handleAddExercise}>Добавить упражнение</AddExerciseButton>
+                <DeleteWorkoutButton onClick={handleDeleteWorkout}>Удалить тренировку</DeleteWorkoutButton>
             </>}
             <Timer/>
         </Container>

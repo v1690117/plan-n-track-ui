@@ -29,10 +29,21 @@ export const CloseButton = styled.button`
 `;
 
 export const AddExerciseButton = styled.button`
-    margin-top: 20px;
+    margin-top: 10px;
     padding: 10px;
     width: 100%;
     background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+`;
+
+export const DeleteWorkoutButton = styled.button`
+    margin-top: 10px;
+    padding: 10px;
+    width: 100%;
+    background-color: #f44336;
     color: white;
     border: none;
     border-radius: 5px;

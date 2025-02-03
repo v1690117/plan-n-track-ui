@@ -28,12 +28,18 @@ export default class WorkoutService extends Service {
     }
 
     public async addSet(workout: number, set: ISetCreation): Promise<void> {
-        await this.fetchWithRedirect(`${this.baseUrl}/workouts/${workout}/sets`,{
+        await this.fetchWithRedirect(`${this.baseUrl}/workouts/${workout}/sets`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(set)
         });
+    }
+
+    public async delete(id: number): Promise<void> {
+        await this.fetchWithRedirect(`${this.baseUrl}/workouts/${id}`, {
+            method: 'DELETE'
+        })
     }
 }

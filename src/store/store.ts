@@ -8,8 +8,10 @@ interface AppStore {
     workouts: IWorkout[];
     workout: IWorkout | null;
     sets: ISet[];
+
     loadWorkouts: () => Promise<void>;
     addWorkout: (wo: IWorkoutCreation) => Promise<void>;
+    deleteWorkout: (id: number) => Promise<void>;
     loadWorkout: (workout: number) => Promise<void>;
     addSet: (newSet: ISetCreation) => Promise<void>;
     updateSet: (setId: number, parameters: ISetParameters) => Promise<void>;
@@ -33,6 +35,14 @@ const useAppStore = create<AppStore>()((set) => ({
         try {
             await wsService.create(wo);
             await useAppStore.getState().loadWorkouts();
+        } catch (error) {
+            alert(error);
+        }
+    },
+    deleteWorkout: async (id) => {
+        try {
+            await wsService.delete(id);
+            useAppStore.getState().unselectWorkout();
         } catch (error) {
             alert(error);
         }
