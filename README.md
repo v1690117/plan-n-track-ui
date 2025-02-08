@@ -1,5 +1,5 @@
 ## Plan and Track
-http://plan-n-track.ru  
+https://plan-n-track.ru  
 
 The app to plan your gym workouts and track the progress.   
 
