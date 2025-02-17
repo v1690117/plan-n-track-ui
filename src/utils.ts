@@ -1,4 +1,9 @@
 export const formattedDate = (date: number) => {
     const d = new Date(date);
-    return ` ${d.getDate()}.${d.getMonth()}.${d.getFullYear()}  ${d.getHours()}:${d.getMinutes()} `;
-}
+
+    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const year = d.getFullYear();
+
+    return `${day}.${month}.${year}`;
+};

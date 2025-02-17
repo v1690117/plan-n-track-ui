@@ -50,7 +50,9 @@ const useAppStore = create<AppStore>()((set) => ({
     loadWorkouts: async () => {
         try {
             const workouts = await wsService.findAll();
-            set({workouts});
+            set({
+                workouts: workouts.sort((f, s) => s.date - f.date)
+            });
         } catch (error) {
             alert(error);
         }
