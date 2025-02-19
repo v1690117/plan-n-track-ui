@@ -2,7 +2,16 @@ import React, {useCallback, useEffect, useMemo} from 'react';
 import {formattedDate} from "../../utils";
 import {useNavigate, useParams} from "react-router-dom";
 import {ISet} from "../../model/ISet"
-import {CloseButton, DeleteWorkoutButton, ExerciseList, Header, WorkoutDate, WorkoutTitle} from "./WorkoutStyles";
+import {
+    CloseButton,
+    DeleteWorkoutButton,
+    ExerciseList,
+    Header,
+    HeadingTitle,
+    HeadingToolbar,
+    WorkoutDate,
+    WorkoutTitle
+} from "./WorkoutStyles";
 
 import Exercise from "./Exercise/Exercise.tsx";
 
@@ -61,14 +70,14 @@ const WorkoutHeader: React.FC = () => {
         {exercises.map(exercise => <Exercise name={exercise.name} sets={exercise.sets} key={exercise.name}/>)}
     </ExerciseList>, [exercises]);
     return (<Header>
-        <div>
+        <HeadingTitle>
             <WorkoutTitle>{workout?.title}</WorkoutTitle>
             <WorkoutDate>{workout && formattedDate(workout.date)}</WorkoutDate>
-        </div>
-        <div>
+        </HeadingTitle>
+        <HeadingToolbar>
             <DeleteWorkoutButton onClick={handleDeleteWorkout}>Удалить</DeleteWorkoutButton>
             <CloseButton onClick={onClose}>Закрыть</CloseButton>
-        </div>
+        </HeadingToolbar>
     </Header>);
 };
 
