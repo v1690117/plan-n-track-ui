@@ -1,11 +1,29 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
+export const Header = styled.div`
     height: 100%;
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    padding: 4px 16px 4px 16px;
+    align-items: center;
 `;
 
-export const Title = styled.h1`
-    text-align: center;
+export const CreateButton = styled.button`
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+`;
+
+export const Title = styled.h2`
+    // text-align: center;
+`;
+
+export const Container = styled.div`
+    height: 100%;
 `;
 
 export const WorkoutListWrapper = styled.div`
@@ -30,15 +48,4 @@ export const WorkoutTitle = styled.div`
 
 export const WorkoutDate = styled.div`
     color: #888;
-`;
-
-export const CreateButton = styled.button`
-    margin-top: 20px;
-    padding: 10px;
-    width: 100%;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
 `;

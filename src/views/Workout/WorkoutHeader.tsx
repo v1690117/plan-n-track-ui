@@ -1,7 +1,8 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
-import {useParams} from "react-router-dom";
+import {formattedDate} from "../../utils";
+import {useNavigate, useParams} from "react-router-dom";
 import {ISet} from "../../model/ISet"
-import {AddExerciseButton, Container, ExerciseList} from "./WorkoutStyles";
+import {CloseButton, DeleteWorkoutButton, ExerciseList, Header, WorkoutDate, WorkoutTitle} from "./WorkoutStyles";
 
 import Exercise from "./Exercise/Exercise.tsx";
 
@@ -12,13 +13,14 @@ interface Exercise {
     sets: ISet[];
 }
 
-const Workout: React.FC = () => {
+const WorkoutHeader: React.FC = () => {
+    const navigate = useNavigate();
     const {id} = useParams<{ id: string }>();
     const workout = useAppStore(state => state.workout);
     const sets = useAppStore(state => state.sets);
     const loadWorkout = useAppStore(state => state.loadWorkout);
-    const addSet = useAppStore(state => state.addSet);
     const unselectWorkout = useAppStore(state => state.unselectWorkout);
+    const deleteWorkout = useAppStore(state => state.deleteWorkout);
 
     const exercises = useMemo(() => {
         if (!id) { // todo needed?
@@ -39,17 +41,14 @@ const Workout: React.FC = () => {
         return newExercises;
     }, [id, sets]);
 
-    const handleAddExercise = useCallback(async () => {
-        const title = prompt("Введите название упражнения");
-        if (title) {
-            await addSet({
-                title,
-                load: 0,
-                reps: 0,
-                rest: 0
-            });
+    const onClose = useCallback(() => navigate('/'), [navigate]);
+
+    const handleDeleteWorkout = useCallback(async () => {
+        if (confirm("Вся информация о тренировке будет удалена. Продолжить?")) {
+            await deleteWorkout(Number(id));
+            navigate('/');
         }
-    }, [addSet]);
+    }, [deleteWorkout, id, navigate]);
 
     useEffect(() => {
         if (id) {
@@ -58,19 +57,19 @@ const Workout: React.FC = () => {
     }, [id, loadWorkout]);
 
     useEffect(() => () => unselectWorkout(), [unselectWorkout]);
-
-    const exercisesComponent = useMemo(() => <ExerciseList>
+    useMemo(() => <ExerciseList>
         {exercises.map(exercise => <Exercise name={exercise.name} sets={exercise.sets} key={exercise.name}/>)}
     </ExerciseList>, [exercises]);
-
-    return (
-        <Container>
-            {workout && <>
-                {exercisesComponent}
-                <AddExerciseButton onClick={handleAddExercise}>Добавить упражнение</AddExerciseButton>
-            </>}
-        </Container>
-    );
+    return (<Header>
+        <div>
+            <WorkoutTitle>{workout?.title}</WorkoutTitle>
+            <WorkoutDate>{workout && formattedDate(workout.date)}</WorkoutDate>
+        </div>
+        <div>
+            <DeleteWorkoutButton onClick={handleDeleteWorkout}>Удалить</DeleteWorkoutButton>
+            <CloseButton onClick={onClose}>Закрыть</CloseButton>
+        </div>
+    </Header>);
 };
 
-export default Workout;
+export default WorkoutHeader;
