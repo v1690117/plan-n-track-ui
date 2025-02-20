@@ -8,7 +8,6 @@ export const Header = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    // margin-bottom: 20px;
 `;
 
 export const HeadingTitle = styled.div`
@@ -47,7 +46,6 @@ export const CloseButton = styled.button`
 export const AddExerciseButton = styled.button`
     margin-top: 10px;
     padding: 10px;
-    // width: 100%;
     background-color: #007BFF;
     color: white;
     border: none;
@@ -56,9 +54,7 @@ export const AddExerciseButton = styled.button`
 `;
 
 export const DeleteWorkoutButton = styled.button`
-    // margin-top: 10px;
     padding: 10px;
-    // width: 100%;
     background-color: #f44336;
     color: white;
     border: none;

@@ -19,7 +19,6 @@ export const CreateButton = styled.button`
 `;
 
 export const Title = styled.h2`
-    // text-align: center;
 `;
 
 export const Container = styled.div`
