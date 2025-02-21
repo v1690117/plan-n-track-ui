@@ -21,4 +21,5 @@ export const Body = styled.div`
 export const NavBar = styled.div`
     height: 50px;
     flex-shrink: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1); 
 `;
