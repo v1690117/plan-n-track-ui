@@ -12,25 +12,23 @@ import WorkoutHeader from "./views/Workout/WorkoutHeader.tsx";
 const App: React.FC = () => {
     return (
         <Container>
-            <Header>
-                <Router>
+            <Router>
+                <Header>
                     <Routes>
                         <Route path="/" element={<WorkoutListHeader/>}/>
                         <Route path="/workout/:id" element={<WorkoutHeader/>}/>
                     </Routes>
-                </Router>
-            </Header>
-            <Body>
-                <Router>
+                </Header>
+                <Body>
                     <Routes>
                         <Route path="/" element={<WorkoutList/>}/>
                         <Route path="/workout/:id" element={<Workout/>}/>
                     </Routes>
-                </Router>
-            </Body>
-            <NavBar>
-                <Timer/>
-            </NavBar>
+                </Body>
+                <NavBar>
+                    <Timer/>
+                </NavBar>
+            </Router>
         </Container>
     );
 };
