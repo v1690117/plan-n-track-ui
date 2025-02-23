@@ -27,12 +27,3 @@ export const ExerciseDetails = styled.div`
     padding: 10px;
     background-color: #fff;
 `;
-
-export const AddSetButton = styled.button`
-    background-color: #007BFF;
-    color: white;
-    padding: 5px 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-`;

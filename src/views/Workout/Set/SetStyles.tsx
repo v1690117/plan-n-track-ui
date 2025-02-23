@@ -25,28 +25,3 @@ export const Input = styled.input`
     border-radius: 5px;
     width: 30%;
 `
-export const Button = styled.button`
-    padding: 5px 10px;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-
-    &:hover {
-        background-color: #0056b3;
-    }
-
-    &:active {
-        background-color: #004085;
-    }
-`;
-
-export const DeleteButton = styled.button`
-    background-color: #f44336;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-`;

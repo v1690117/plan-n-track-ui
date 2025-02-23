@@ -1,7 +1,8 @@
 import React, {useCallback, useEffect} from 'react';
 
-import {CreateButton, Header, Title} from "./WorkoutListStyles";
+import {Header, Title} from "./WorkoutListStyles";
 import useAppStore from "../../store/store.ts";
+import {TextButton} from "../../components/TextButton/TextButton.tsx";
 
 const WorkoutListHeader: React.FC = () => {
     const loadWorkouts = useAppStore(s => s.loadWorkouts);
@@ -21,7 +22,7 @@ const WorkoutListHeader: React.FC = () => {
     return (
         <Header>
             <Title>Мои тренировки</Title>
-            <CreateButton onClick={handleCreateWorkout}>Создать тренировку</CreateButton>
+            <TextButton onClick={handleCreateWorkout}>Создать тренировку</TextButton>
         </Header>
     );
 };

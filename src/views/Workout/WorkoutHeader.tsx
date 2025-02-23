@@ -3,8 +3,6 @@ import {formattedDate} from "../../utils";
 import {useNavigate, useParams} from "react-router-dom";
 import {ISet} from "../../model/ISet"
 import {
-    CloseButton,
-    DeleteWorkoutButton,
     ExerciseList,
     Header,
     HeadingTitle,
@@ -16,6 +14,7 @@ import {
 import Exercise from "./Exercise/Exercise.tsx";
 
 import useAppStore from "../../store/store.ts";
+import {TextButton} from "../../components/TextButton/TextButton.tsx";
 
 interface Exercise {
     name: string;
@@ -75,8 +74,8 @@ const WorkoutHeader: React.FC = () => {
             <WorkoutDate>{workout && formattedDate(workout.date)}</WorkoutDate>
         </HeadingTitle>
         <HeadingToolbar>
-            <DeleteWorkoutButton onClick={handleDeleteWorkout}>Удалить</DeleteWorkoutButton>
-            <CloseButton onClick={onClose}>Закрыть</CloseButton>
+            <TextButton onClick={handleDeleteWorkout} type={'negative'}>Удалить</TextButton>
+            <TextButton onClick={onClose}>Закрыть</TextButton>
         </HeadingToolbar>
     </Header>);
 };

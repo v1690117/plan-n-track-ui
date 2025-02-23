@@ -1,5 +1,4 @@
 import {
-    AddSetButton,
     ExerciseCard,
     ExerciseDetails,
     ExerciseHeader,
@@ -10,6 +9,7 @@ import Set from "../Set/Set.tsx";
 import React, {useCallback, useState} from "react";
 import {ISet} from "../../../model/ISet.ts";
 import useAppStore from "../../../store/store.ts";
+import {TextButton} from "../../../components/TextButton/TextButton.tsx";
 
 interface ExerciseProps {
     name: string;
@@ -45,7 +45,7 @@ const Exercise: React.FC<ExerciseProps> = ({name, sets}) => {
         {expansion[name] && (
             <ExerciseDetails>
                 {sets.map((set, index) => <Set set={set} key={index}/>)}
-                <AddSetButton onClick={() => handleAddSet(name)}>Добавить подход</AddSetButton>
+                <TextButton onClick={() => handleAddSet(name)}>Добавить подход</TextButton>
             </ExerciseDetails>
         )}
     </ExerciseCard>

@@ -34,34 +34,6 @@ export const WorkoutDate = styled.div`
     color: #888;
 `;
 
-export const CloseButton = styled.button`
-    background-color: #f44336;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-`;
-
-export const AddExerciseButton = styled.button`
-    margin-top: 10px;
-    padding: 10px;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-`;
-
-export const DeleteWorkoutButton = styled.button`
-    padding: 10px;
-    background-color: #f44336;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-`;
-
 export const ExerciseList = styled.div`
     margin-top: 20px;
 `;

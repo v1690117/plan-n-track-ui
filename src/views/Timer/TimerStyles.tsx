@@ -15,15 +15,6 @@ export const Input = styled.input`
     width: 50px;
 `
 
-export const StartButton = styled.button`
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-`;
-
 export const SecondsDisplay = styled.div`
     font-size: 24px;  
     color: #d9534f;  
@@ -32,13 +23,4 @@ export const SecondsDisplay = styled.div`
     border-radius: 5px;
     width: 50px;
     text-align: center;
-`;
-
-export const StopButton = styled.button`
-    background-color: #f44336;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
 `;

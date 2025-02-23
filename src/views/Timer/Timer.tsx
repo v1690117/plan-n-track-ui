@@ -1,6 +1,7 @@
 import React, {useCallback, useState} from "react";
-import {Input, SecondsDisplay, StartButton, StopButton, TimerContainer} from "./TimerStyles.tsx";
+import {Input, SecondsDisplay, TimerContainer} from "./TimerStyles.tsx";
 import useAppStore from "../../store/store.ts";
+import {TextButton} from "../../components/TextButton/TextButton.tsx";
 
 const Timer: React.FC = () => {
     const [rest, setRest] = useState(0);
@@ -19,9 +20,9 @@ const Timer: React.FC = () => {
 
     return <TimerContainer>
         <Input type="number" placeholder="Таймер" value={rest} onChange={onRestChangedHandler}/>
-        <StartButton onClick={onStartClickHandler}>Запустить</StartButton>
+        <TextButton onClick={onStartClickHandler}>Запустить</TextButton>
         <SecondsDisplay>{seconds}</SecondsDisplay>
-        <StopButton onClick={onResetClickHandler}>Сбросить</StopButton>
+        <TextButton onClick={onResetClickHandler} type={'negative'}>Сбросить</TextButton>
     </TimerContainer>;
 }
 

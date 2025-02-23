@@ -1,11 +1,12 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
 import {useParams} from "react-router-dom";
 import {ISet} from "../../model/ISet"
-import {AddExerciseButton, Container, ExerciseList} from "./WorkoutStyles";
+import {Container, ExerciseList} from "./WorkoutStyles";
 
 import Exercise from "./Exercise/Exercise.tsx";
 
 import useAppStore from "../../store/store.ts";
+import {TextButton} from "../../components/TextButton/TextButton.tsx";
 
 interface Exercise {
     name: string;
@@ -67,7 +68,7 @@ const Workout: React.FC = () => {
         <Container>
             {workout && <>
                 {exercisesComponent}
-                <AddExerciseButton onClick={handleAddExercise}>Добавить упражнение</AddExerciseButton>
+                <TextButton onClick={handleAddExercise}>Добавить упражнение</TextButton>
             </>}
         </Container>
     );

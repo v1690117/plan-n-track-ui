@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from "react";
-import {Button, Checkbox, DeleteButton, Input, SetRow, Wrapper} from "./SetStyles";
+import {Checkbox, Input, SetRow, Wrapper} from "./SetStyles";
 import {ISet} from "../../../model/ISet";
 import useAppStore from "../../../store/store.ts";
+import {TextButton} from "../../../components/TextButton/TextButton.tsx";
 
 interface SetProps {
     set: ISet;
@@ -69,12 +70,12 @@ const Set: React.FC<SetProps> = (props) => {
     return <Wrapper>
         <SetRow>
             <Checkbox type="checkbox" checked={completed} onChange={onCompletionChangedHandler}/>
-            <Input type="number" placeholder="Вес" value={load || ''} onChange={onLoadChangedHandler}/>
+            <Input type="number" placeholder="Ве    с" value={load || ''} onChange={onLoadChangedHandler}/>
             <Input type="number" placeholder="Повторения" value={reps || ''} onChange={onRepsChangeHandler}/>
             <Input type="number" placeholder="Отдых" value={rest || ''} onChange={onRestChangedHandler}/>
-            <DeleteButton onClick={onDeleteClickHandler}>Delete</DeleteButton>
+            <TextButton onClick={onDeleteClickHandler} type={'negative'}>Удалить</TextButton>
         </SetRow>
-        {hasChanges && <Button onClick={onClickSaveHandler}>Сохранить</Button>}
+        {hasChanges && <TextButton onClick={onClickSaveHandler}>Сохранить</TextButton>}
     </Wrapper>
 }
 export default Set;

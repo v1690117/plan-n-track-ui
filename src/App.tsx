@@ -13,18 +13,20 @@ const App: React.FC = () => {
     return (
         <Container>
             <Router>
-                <Header>
-                    <Routes>
-                        <Route path="/" element={<WorkoutListHeader/>}/>
-                        <Route path="/workout/:id" element={<WorkoutHeader/>}/>
-                    </Routes>
-                </Header>
-                <Body>
-                    <Routes>
-                        <Route path="/" element={<WorkoutList/>}/>
-                        <Route path="/workout/:id" element={<Workout/>}/>
-                    </Routes>
-                </Body>
+                <Routes>
+                    <Route path="/" element={
+                        <>
+                            <Header><WorkoutListHeader/></Header>
+                            <Body><WorkoutList/></Body>
+                        </>
+                    }/>
+                    <Route path="/workout/:id" element={
+                        <>
+                            <Header><WorkoutHeader/></Header>
+                            <Body><Workout/></Body>
+                        </>
+                    }/>
+                </Routes>
                 <NavBar>
                     <Timer/>
                 </NavBar>

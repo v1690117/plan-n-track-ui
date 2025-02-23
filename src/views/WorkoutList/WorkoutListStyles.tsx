@@ -9,15 +9,6 @@ export const Header = styled.div`
     align-items: center;
 `;
 
-export const CreateButton = styled.button`
-    padding: 10px;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-`;
-
 export const Title = styled.h2`
 `;
 
