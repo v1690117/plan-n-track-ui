@@ -2,14 +2,7 @@ import React, {useCallback, useEffect, useMemo} from 'react';
 import {formattedDate} from "../../utils";
 import {useNavigate, useParams} from "react-router-dom";
 import {ISet} from "../../model/ISet"
-import {
-    ExerciseList,
-    Header,
-    HeadingTitle,
-    HeadingToolbar,
-    WorkoutDate,
-    WorkoutTitle
-} from "./WorkoutStyles";
+import {ExerciseList, Header, HeadingTitle, HeadingToolbar, WorkoutDate, WorkoutTitle} from "./WorkoutStyles";
 
 import Exercise from "./Exercise/Exercise.tsx";
 
@@ -49,8 +42,6 @@ const WorkoutHeader: React.FC = () => {
         return newExercises;
     }, [id, sets]);
 
-    const onClose = useCallback(() => navigate('/'), [navigate]);
-
     const handleDeleteWorkout = useCallback(async () => {
         if (confirm("Вся информация о тренировке будет удалена. Продолжить?")) {
             await deleteWorkout(Number(id));
@@ -75,7 +66,6 @@ const WorkoutHeader: React.FC = () => {
         </HeadingTitle>
         <HeadingToolbar>
             <TextButton onClick={handleDeleteWorkout} type={'negative'}>Удалить</TextButton>
-            <TextButton onClick={onClose}>Закрыть</TextButton>
         </HeadingToolbar>
     </Header>);
 };
