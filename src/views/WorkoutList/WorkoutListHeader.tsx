@@ -22,7 +22,7 @@ const WorkoutListHeader: React.FC = () => {
     return (
         <Header>
             <Title>Мои тренировки</Title>
-            <TextButton onClick={handleCreateWorkout}>Создать тренировку</TextButton>
+            <TextButton onClick={handleCreateWorkout}>Добавить тренировку</TextButton>
         </Header>
     );
 };
