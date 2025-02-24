@@ -3,6 +3,8 @@ import {IWorkout, IWorkoutCreation} from "../model/IWorkout.ts";
 import WorkoutService from "../services/WorkoutService.ts";
 import {ISet, ISetCreation, ISetParameters} from "../model/ISet.ts";
 import SetService from "../services/SetService.ts";
+import {IExercise, IExerciseCreation} from "../model/IExercise.ts";
+import ExerciseService from "../services/ExerciseService.ts";
 
 interface AppStore {
     workouts: IWorkout[];
@@ -18,6 +20,11 @@ interface AppStore {
     deleteSet: (setId: number) => Promise<void>;
     unselectWorkout: () => void;
 
+    exercises: IExercise[];
+    loadExercises: () => Promise<void>;
+    addExercise: (ex: IExerciseCreation) => Promise<void>;
+    deleteExercise: (id: number) => Promise<void>;
+
     timer: number | null;
     seconds: number;
     setTimer: (seconds: number) => void;
@@ -26,6 +33,7 @@ interface AppStore {
 
 const wsService = new WorkoutService();
 const setService = new SetService();
+const exService = new ExerciseService();
 
 const useAppStore = create<AppStore>()((set) => ({
     workouts: [],
@@ -95,6 +103,33 @@ const useAppStore = create<AppStore>()((set) => ({
             workout: null,
             sets: []
         });
+    },
+
+    exercises: [],
+    addExercise: async (ex: IExerciseCreation) => {
+        try {
+            await exService.create(ex);
+            await useAppStore.getState().loadExercises();
+        } catch (error) {
+            alert(error);
+        }
+    },
+    deleteExercise: async (id) => {
+        try {
+            await exService.delete(id);
+        } catch (error) {
+            alert(error);
+        }
+    },
+    loadExercises: async () => {
+        try {
+            const exercises = await exService.findAll();
+            set({
+                exercises: exercises.sort()
+            });
+        } catch (error) {
+            alert(error);
+        }
     },
 
     timer: null,
