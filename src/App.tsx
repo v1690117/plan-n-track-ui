@@ -9,6 +9,8 @@ import WorkoutHeader from "./views/Workout/WorkoutHeader.tsx";
 import Navigation from "./views/Navigation/Navigation.tsx";
 import ExerciseList from "./views/ExerciseList/ExerciseList.tsx";
 import ExerciseListHeader from "./views/ExerciseList/ExerciseListHeader.tsx";
+import ExerciseHeader from "./views/Exercise/ExerciseHeader.tsx";
+import Exercise from "./views/Exercise/Exercise.tsx";
 
 const App: React.FC = () => {
     return (
@@ -31,6 +33,12 @@ const App: React.FC = () => {
                         <>
                             <Header><ExerciseListHeader/></Header>
                             <Body><ExerciseList/></Body>
+                        </>
+                    }/>
+                    <Route path="/exercises/:id" element={
+                        <>
+                            <Header><ExerciseHeader/></Header>
+                            <Body><Exercise/></Body>
                         </>
                     }/>
                 </Routes>

@@ -10,8 +10,8 @@ const ExerciseList: React.FC = () => {
     const exercises = useAppStore(s => s.exercises);
     const loadExercises = useAppStore(s => s.loadExercises);
 
-    const handleExerciseClick = useCallback(() => {
-        navigate(`/exercises`);
+    const handleExerciseClick = useCallback((id: number) => {
+        navigate(`/exercises/${id}`);
     }, [navigate]);
 
     useEffect(() => {
@@ -22,7 +22,7 @@ const ExerciseList: React.FC = () => {
         <Container>
             <ExerciseListWrapper>
                 {exercises.map(ex => (
-                    <ExerciseItem key={ex.id} onClick={() => handleExerciseClick()}>
+                    <ExerciseItem key={ex.id} onClick={() => handleExerciseClick(ex.id)}>
                         <ExerciseTitle>{ex.title}</ExerciseTitle>
                     </ExerciseItem>
                 ))}

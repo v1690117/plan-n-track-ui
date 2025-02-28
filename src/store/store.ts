@@ -15,15 +15,18 @@ interface AppStore {
     addWorkout: (wo: IWorkoutCreation) => Promise<void>;
     deleteWorkout: (id: number) => Promise<void>;
     loadWorkout: (workout: number) => Promise<void>;
+    loadExercise: (exercise: number) => Promise<void>;
     addSet: (newSet: ISetCreation) => Promise<void>;
     updateSet: (setId: number, parameters: ISetParameters) => Promise<void>;
     deleteSet: (setId: number) => Promise<void>;
     unselectWorkout: () => void;
 
     exercises: IExercise[];
+    exercise: IExercise | null;
     loadExercises: () => Promise<void>;
     addExercise: (ex: IExerciseCreation) => Promise<void>;
     deleteExercise: (id: number) => Promise<void>;
+    unselectExercise: () => void;
 
     timer: number | null;
     seconds: number;
@@ -38,6 +41,7 @@ const exService = new ExerciseService();
 const useAppStore = create<AppStore>()((set) => ({
     workouts: [],
     workout: null,
+    exercise: null,
     sets: [],
     addWorkout: async (wo: IWorkoutCreation) => {
         try {
@@ -114,6 +118,14 @@ const useAppStore = create<AppStore>()((set) => ({
             alert(error);
         }
     },
+    loadExercise: async (exId) => {
+        try {
+            const exercise = await exService.findById(exId);
+            set({exercise});
+        } catch (error) {
+            alert(error);
+        }
+    },
     deleteExercise: async (id) => {
         try {
             await exService.delete(id);
@@ -130,6 +142,11 @@ const useAppStore = create<AppStore>()((set) => ({
         } catch (error) {
             alert(error);
         }
+    },
+    unselectExercise: () => {
+        set({
+            exercise: null
+        });
     },
 
     timer: null,
