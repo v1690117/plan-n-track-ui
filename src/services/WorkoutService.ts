@@ -42,4 +42,10 @@ export default class WorkoutService extends Service {
             method: 'DELETE'
         })
     }
+
+    public async copy(id: number): Promise<number> {
+        return await this.fetchWithRedirect(`${this.baseUrl}/workouts/${id}`, {
+            method: 'POST'
+        }).then(r => r.text()) as number;
+    }
 }

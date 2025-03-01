@@ -14,11 +14,19 @@ const WorkoutHeader: React.FC = () => {
     const loadWorkout = useAppStore(state => state.loadWorkout);
     const unselectWorkout = useAppStore(state => state.unselectWorkout);
     const deleteWorkout = useAppStore(state => state.deleteWorkout);
+    const copyWorkout = useAppStore(state => state.copyWorkout);
 
     const handleDeleteWorkout = useCallback(async () => {
         if (confirm("Вся информация о тренировке будет удалена. Продолжить?")) {
             await deleteWorkout(Number(id));
             navigate('/');
+        }
+    }, [deleteWorkout, id, navigate]);
+
+    const handleCopyWorkout = useCallback(async () => {
+        if (confirm("Тренировка, подходы и их параметры буду продублированы. Продолжить?")) {
+            const newWo = await copyWorkout(Number(id));
+            navigate(`/workouts/${newWo}`);
         }
     }, [deleteWorkout, id, navigate]);
 
@@ -35,6 +43,7 @@ const WorkoutHeader: React.FC = () => {
             <WorkoutDate>{workout && formattedDate(workout.date)}</WorkoutDate>
         </HeadingTitle>
         <HeadingToolbar>
+            <TextButton onClick={handleCopyWorkout}>Копировать</TextButton>
             <TextButton onClick={handleDeleteWorkout} type={'negative'}>Удалить</TextButton>
         </HeadingToolbar>
     </Header>);
