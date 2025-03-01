@@ -14,6 +14,7 @@ interface AppStore {
     loadWorkouts: () => Promise<void>;
     addWorkout: (wo: IWorkoutCreation) => Promise<void>;
     deleteWorkout: (id: number) => Promise<void>;
+    copyWorkout: (id: number) => Promise<number>;
     loadWorkout: (workout: number) => Promise<void>;
     loadExercise: (exercise: number) => Promise<void>;
     addSet: (newSet: ISetCreation) => Promise<void>;
@@ -57,6 +58,14 @@ const useAppStore = create<AppStore>()((set) => ({
             useAppStore.getState().unselectWorkout();
         } catch (error) {
             alert(error);
+        }
+    },
+    copyWorkout: async (id) => {
+        try {
+            return await wsService.copy(id);
+        } catch (error) {
+            alert(error);
+            return -1; // todo do it correctly
         }
     },
     loadWorkouts: async () => {
