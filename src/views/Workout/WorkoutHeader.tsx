@@ -26,7 +26,7 @@ const WorkoutHeader: React.FC = () => {
     const handleCopyWorkout = useCallback(async () => {
         if (confirm("Тренировка, подходы и их параметры буду продублированы. Продолжить?")) {
             const newWo = await copyWorkout(Number(id));
-            navigate(`/workouts/${newWo}`);
+            navigate(`/workout/${newWo}`);
         }
     }, [deleteWorkout, id, navigate]);
 
