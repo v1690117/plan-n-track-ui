@@ -1,6 +1,12 @@
 import styled from "styled-components";
 
 export const TimerContainer = styled.span`
+    position: absolute;
+    bottom: 50px;
+    left: 0;
+    width: 100%;
+    height: 50px; 
+
     display: flex;
     justify-content: center;
     align-items: center;
