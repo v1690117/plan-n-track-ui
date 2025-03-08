@@ -1,10 +1,4 @@
-import {
-    ExerciseCard,
-    ExerciseDetails,
-    ExerciseHeader,
-    ExerciseName,
-    SetsInfo
-} from "./ExerciseStyles.tsx";
+import {ExerciseCard, ExerciseDetails, ExerciseHeader, ExerciseName, SetsInfo} from "./ExerciseStyles.tsx";
 import Set from "../Set/Set.tsx";
 import React, {useCallback, useState} from "react";
 import {ISet} from "../../../model/ISet.ts";
@@ -14,9 +8,10 @@ import {TextButton} from "../../../components/TextButton/TextButton.tsx";
 interface ExerciseProps {
     name: string;
     sets: ISet[];
+    exerciseId: number;
 }
 
-const Exercise: React.FC<ExerciseProps> = ({name, sets}) => {
+const Exercise: React.FC<ExerciseProps> = ({name, sets, exerciseId}) => {
     const [expansion, setExpansion] = useState<Record<string, boolean>>({}); // todo use store?
     const addSet = useAppStore(state => state.addSet);
 
@@ -26,9 +21,9 @@ const Exercise: React.FC<ExerciseProps> = ({name, sets}) => {
         setExpansion(newExpansion);
     };
 
-    const handleAddSet = useCallback(async (title: string) => {
+    const handleAddSet = useCallback(async (exerciseId: number) => {
         await addSet({
-            title,
+            exerciseId,
             load: 0,
             reps: 0,
             rest: 0
@@ -45,7 +40,7 @@ const Exercise: React.FC<ExerciseProps> = ({name, sets}) => {
         {expansion[name] && (
             <ExerciseDetails>
                 {sets.map((set, index) => <Set set={set} key={index}/>)}
-                <TextButton onClick={() => handleAddSet(name)}>Добавить подход</TextButton>
+                <TextButton onClick={() => handleAddSet(exerciseId)}>Добавить подход</TextButton>
             </ExerciseDetails>
         )}
     </ExerciseCard>

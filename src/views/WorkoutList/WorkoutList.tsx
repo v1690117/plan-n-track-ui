@@ -2,7 +2,7 @@ import React, {useCallback, useEffect} from 'react';
 
 import {useNavigate} from 'react-router-dom';
 import {formattedDate} from "../../utils";
-import {Container, WorkoutDate, WorkoutListWrapper, WorkoutTitle, WorkoutItem} from "./WorkoutListStyles";
+import {Container, WorkoutDate, WorkoutItem, WorkoutListWrapper, WorkoutTitle} from "./WorkoutListStyles";
 import useAppStore from "../../store/store.ts";
 
 const WorkoutList: React.FC = () => {
