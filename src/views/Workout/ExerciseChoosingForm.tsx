@@ -9,14 +9,13 @@ const CreationFormContainer = styled.div`
     left: 0;
     width: 100%;
     height: 100%;
-    padding: 10px;
     background-color: white;
     display: flex;
     flex-direction: column;
-    gap: 10px;
 `
 
 const SearchableSelect = styled.div`
+    margin: 10px;
     display: flex;
     flex-direction: column;
     cursor: pointer;
@@ -24,7 +23,10 @@ const SearchableSelect = styled.div`
 `
 
 const Input = styled.input`
-    padding: 10px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
 `;
 
 const Ul = styled.div`
@@ -36,11 +38,12 @@ const Ul = styled.div`
 const Li = styled.div`
     display: flex;
     justify-content: space-between;
-    padding: 8px;
     gap: 8px;
+    padding: 8px;
     border: 1px solid #ddd;
     border-radius: 4px;
     background-color: white;
+    font-size: 16px;
 `
 
 const ExerciseTitle = styled.div`
@@ -48,7 +51,7 @@ const ExerciseTitle = styled.div`
 `;
 
 const Toolbar = styled.div`
-    
+    margin: 0px 10px;
 `;
 
 interface WorkoutCreationFormProps {

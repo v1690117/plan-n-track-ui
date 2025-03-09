@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {useParams} from "react-router-dom";
 import {ISet} from "../../model/ISet"
-import {Container, ExerciseList} from "./WorkoutStyles";
+import {Container, ExerciseList, Toolbar} from "./WorkoutStyles";
 
 import Exercise from "./Exercise/Exercise.tsx";
 
@@ -68,7 +68,9 @@ const Workout: React.FC = () => {
         <Container>
             {workout && <>
                 {exercisesComponent}
-                <TextButton onClick={handleAddExercise}>Добавить упражнение</TextButton>
+                    <Toolbar>
+                        <TextButton onClick={handleAddExercise}>Добавить упражнение</TextButton>
+                    </Toolbar>
             </>}
             {showExCreationForm && <ExerciseChoosingForm onClose={closeExCreation}/>}
         </Container>
