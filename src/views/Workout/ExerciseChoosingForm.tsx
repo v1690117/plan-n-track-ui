@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import styled from "styled-components";
 import {TextButton} from "../../components/TextButton/TextButton.tsx";
 import useAppStore from "../../store/store.ts";
@@ -63,6 +63,8 @@ const ExerciseChoosingForm: React.FC<WorkoutCreationFormProps> = ({onClose}) => 
     const loadExercises = useAppStore(s => s.loadExercises);
     const addSet = useAppStore(state => state.addSet);
 
+    const [filter, setFilter] = useState('');
+
     const handleAddExercise = useCallback(async (exerciseId: number) => {
         await addSet({
             exerciseId,
@@ -73,6 +75,14 @@ const ExerciseChoosingForm: React.FC<WorkoutCreationFormProps> = ({onClose}) => 
         onClose();
     }, [addSet]);
 
+    const handleFilterChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        setFilter(e.currentTarget.value);
+    }, []);
+
+    const filteredExercises = useMemo(() => {
+        return exercises.filter(ex => !filter || ex.title.toLowerCase().indexOf(filter.toLowerCase()) >= 0);
+    }, [exercises, filter]);
+
     useEffect(() => {
         loadExercises()
     }, [loadExercises]);
@@ -80,9 +90,9 @@ const ExerciseChoosingForm: React.FC<WorkoutCreationFormProps> = ({onClose}) => 
     return (
         <CreationFormContainer>
             <SearchableSelect>
-                <Input value={"// todo "}/>
+                <Input value={filter} onChange={handleFilterChange}/>
                 <Ul>
-                    {exercises.map(ex => <Li key={ex.id}>
+                    {filteredExercises.map(ex => <Li key={ex.id}>
                         <ExerciseTitle>{ex.title}</ExerciseTitle>
                         <TextButton onClick={() => handleAddExercise(ex.id)}>Добавить</TextButton>
                     </Li>)}
