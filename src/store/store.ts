@@ -146,7 +146,11 @@ const useAppStore = create<AppStore>()((set) => ({
         try {
             const exercises = await exService.findAll();
             set({
-                exercises: exercises.sort()
+                exercises: exercises.sort((a, b) => {
+                    if (a.title < b.title) return -1;
+                    if (a.title > b.title) return 1;
+                    return 0;
+                })
             });
         } catch (error) {
             alert(error);
