@@ -47,5 +47,4 @@ export const WorkoutFilter = styled.input`
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 16px;
-    // width: 100%;
 `;
