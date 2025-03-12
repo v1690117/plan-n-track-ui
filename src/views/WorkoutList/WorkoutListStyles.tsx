@@ -14,6 +14,8 @@ export const Title = styled.h2`
 
 export const Container = styled.div`
     height: 100%;
+    display: flex;
+    flex-direction: column;
 `;
 
 export const WorkoutListWrapper = styled.div`
@@ -38,4 +40,11 @@ export const WorkoutTitle = styled.div`
 
 export const WorkoutDate = styled.div`
     color: #888;
+`;
+
+export const WorkoutFilter = styled.input`
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
 `;
