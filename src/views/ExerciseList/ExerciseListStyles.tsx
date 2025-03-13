@@ -13,6 +13,8 @@ export const Title = styled.h2`
 `;
 
 export const Container = styled.div`
+    display: flex;
+    flex-direction: column;
     height: 100%;
 `;
 
@@ -36,6 +38,9 @@ export const ExerciseTitle = styled.div`
     font-weight: bold;
 `;
 
-export const WorkoutDate = styled.div`
-    color: #888;
+export const ExerciseFilter = styled.input`
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
 `;
