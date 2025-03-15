@@ -1,4 +1,5 @@
 import {IExercise} from "./IExercise.ts";
+import {IWorkout} from "./IWorkout.ts";
 
 export interface ISet {
     id: number;
@@ -9,6 +10,7 @@ export interface ISet {
     rest: number;
     completed: boolean;
     exercise: IExercise;
+    workout: IWorkout;
 }
 
 export interface ISetCreation {

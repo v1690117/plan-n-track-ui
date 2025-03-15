@@ -28,6 +28,8 @@ interface AppStore {
     addExercise: (ex: IExerciseCreation) => Promise<void>;
     deleteExercise: (id: number) => Promise<void>;
     unselectExercise: () => void;
+    exerciseSets: ISet[];
+    loadExerciseSets: (exercise: number) => Promise<void>;
 
     timer: number | null;
     seconds: number;
@@ -43,6 +45,7 @@ const useAppStore = create<AppStore>()((set) => ({
     workouts: [],
     workout: null,
     exercise: null,
+    exerciseSets: [],
     sets: [],
     addWorkout: async (wo: IWorkoutCreation) => {
         try {
@@ -160,6 +163,16 @@ const useAppStore = create<AppStore>()((set) => ({
         set({
             exercise: null
         });
+    },
+    loadExerciseSets: async (exercise: number) => {
+        try {
+            const sets = await exService.findSets(exercise);
+            set({
+                exerciseSets: sets
+            });
+        } catch (error) {
+            alert(error);
+        }
     },
 
     timer: null,

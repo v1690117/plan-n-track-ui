@@ -1,5 +1,6 @@
 import Service from "./Service";
 import {IExercise, IExerciseCreation} from "../model/IExercise.ts";
+import {ISet} from "../model/ISet.ts";
 
 export default class ExerciseService extends Service {
     private readonly baseUrl: string = '/api';
@@ -26,5 +27,9 @@ export default class ExerciseService extends Service {
         await this.fetchWithRedirect(`${this.baseUrl}/exercises/${id}`, {
             method: 'DELETE'
         })
+    }
+
+    public async findSets(id: number): Promise<ISet[]> {
+        return this.fetchWithRedirect(`${this.baseUrl}/exercises/${id}/sets`).then(r => r.json());
     }
 }
