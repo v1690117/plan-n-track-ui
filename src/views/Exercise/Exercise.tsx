@@ -97,7 +97,7 @@ const Exercise: React.FC = () => {
             {
                 getValue: datum => datum.load,
                 elementType: mode === 'detailed' ? 'bubble' : 'line',
-                min: 0
+                // min: 0
             }
         ],
         [mode]
@@ -127,7 +127,7 @@ const Exercise: React.FC = () => {
                         data,
                         primaryAxis,
                         secondaryAxes,
-                        interactionMode: "primary",
+                        interactionMode: "closest",
                         getDatumStyle: (datum) =>
                             ({
                                 circle: {r: datum.originalDatum.radius},
