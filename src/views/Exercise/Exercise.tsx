@@ -106,7 +106,7 @@ const Exercise: React.FC = () => {
     const handleModeChange = (e: ChangeEvent<HTMLSelectElement>) => {
         const value = e.currentTarget.value;
         if (value === 'basic' || value === 'detailed') {
-            setMode(value)
+            setMode(value);
         }
     }
 
@@ -119,7 +119,7 @@ const Exercise: React.FC = () => {
         <Container>
             <ModeSelect onChange={handleModeChange}>
                 <ModeOption value='detailed' selected={mode === 'detailed'}>Подробный</ModeOption>
-                <ModeOption value='line' selected={mode === 'basic'}>Простой</ModeOption>
+                <ModeOption value='basic' selected={mode === 'basic'}>Простой</ModeOption>
             </ModeSelect>
             <ChartContainer>
                 {data?.length > 0 && data[0].data.length > 0 && <Chart
