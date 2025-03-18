@@ -23,8 +23,8 @@ function prepareDetailedData(sets: ISet[]) {
         if (!s.workout || !s.workout.date || !s.load || !s.completed) {
             return;
         }
-        if (!grouppedSets["" + s.reps]) {
-            grouppedSets["" + s.reps] = [];
+        if (!grouppedSets[s.reps]) {
+            grouppedSets[s.reps] = [];
         }
         grouppedSets[s.reps].push(s);
     });
