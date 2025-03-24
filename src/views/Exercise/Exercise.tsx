@@ -42,13 +42,15 @@ function prepareDateGroupped(sets: ISet[]) {
     });
     return [
         Object.keys(reps),
-        Object.keys(byDate).map((k: unknown) => {
+        Object.keys(byDate)
+            .sort((a,b) => Number(b) - Number(a))
+            .map((k: unknown) => {
             const date: number = k as number;
             return {
                 date,
                 ...byDate[date]
             }
-        }).sort((a, b) => b.date - a.date)
+        })
     ] as [string[], { date: number }[]];
 }
 
