@@ -1,114 +1,63 @@
-import React, {ChangeEvent, useEffect, useMemo, useState} from 'react';
-import {ChartContainer, Container, ModeOption, ModeSelect} from "./ExerciseStyles";
+import React, {useEffect, useLayoutEffect, useMemo, useRef, useState} from 'react';
+import {ChartContainer, Container} from "./ExerciseStyles";
 import useAppStore from "../../store/store.ts";
 import {useParams} from "react-router-dom";
-import {AxisOptions, Chart} from "react-charts";
 import {ISet} from "../../model/ISet.ts";
+import {CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis} from "recharts";
+import {formattedDate} from "../../utils.ts";
 
-type Set = {
-    date: Date,
-    load: number,
-    radius: number
-}
-
-type Series = {
-    label: string,
-    data: Set[]
-}
-
-
-function prepareDetailedData(sets: ISet[]) {
-    const grouppedSets: { [key: string]: ISet[] } = {};
+function prepareDateGroupped(sets: ISet[]) {
+    const reps: { [key: string]: number } = {};
+    const byDate: { [key: number]: { [key: number]: number } } = {};
     sets.forEach(s => {
         if (!s.workout || !s.workout.date || !s.load || !s.completed) {
             return;
         }
-        if (!grouppedSets[s.reps]) {
-            grouppedSets[s.reps] = [];
+        if (!byDate[s.workout.date]) {
+            byDate[s.workout.date] = {};
         }
-        grouppedSets[s.reps].push(s);
-    });
-    return Object.keys(grouppedSets).map((r) => {
-        const reps = Number(r);
-        return {
-            label: `${reps}`,
-            data: grouppedSets[reps].map(s => ({
-                date: new Date(s.workout.date),
-                load: s.load,
-                radius: s.reps
-            }))
+        const currentVal = byDate[s.workout.date][s.reps];
+        if (!currentVal || currentVal < s.load) {
+            reps[s.reps] = s.reps;
+            byDate[s.workout.date][s.reps] = s.load;
         }
     });
-}
-
-function prepareBasicData(sets: ISet[]) {
-    const repsToDateGroup: { [key: number]: { [key: number]: ISet } } = {};
-    sets.forEach(s => {
-        if (!s.workout || !s.workout.date || !s.load || !s.completed) {
-            return;
-        }
-        if (!repsToDateGroup[s.reps]) {
-            repsToDateGroup[s.reps] = {};
-        }
-        const existingSet = repsToDateGroup[s.reps][s.workout.date];
-        if (!existingSet || existingSet.load < s.load) {
-            repsToDateGroup[s.reps][s.workout.date] = s;
-        }
-    });
-
-    return Object.keys(repsToDateGroup).map((r: string) => {
-            const reps = Number(r);
+    return [
+        Object.keys(reps),
+        Object.keys(byDate).map((k: unknown) => {
+            const date: number = k as number;
             return {
-                label: `${reps}`,
-                data: Object.values(repsToDateGroup[reps])
-                    .sort((a, b) => b.workout.date - a.workout.date)
-                    .map(s => ({
-                        date: new Date(s.workout.date),
-                        load: s.load,
-                        radius: s.reps
-                    }))
+                date,
+                ...byDate[date]
             }
-        }
-    );
+        }).sort((a, b) => b.date - a.date)
+    ] as [string[], { date: number }[]];
 }
 
 const Exercise: React.FC = () => {
+    const targetRef = useRef<HTMLDivElement>();
     const {id} = useParams<{ id: string }>();
     const sets = useAppStore(s => s.exerciseSets);
     const loadSets = useAppStore(s => s.loadExerciseSets);
+    const [dimensions, setDimensions] = useState({ width:0, height: 0 });
 
-    const [mode, setMode] = useState<'detailed' | 'basic'>('basic');
+    const [reps, data]: [string[], { date: number }[]] = useMemo(() => {
+        return prepareDateGroupped(sets)
+    }, [sets]);
 
-    const data: Series[] = useMemo(() => {
-        return mode === 'detailed' ? prepareDetailedData(sets) : prepareBasicData(sets);
-    }, [mode, sets]);
+    const lines = useMemo(() => reps.map(
+        re => <Line type='linear' dataKey={re}  activeDot={{r: 8}} dot={{r: Number(re) / 2}} connectNulls={true}/>
+    ), [reps]);
 
 
-    const primaryAxis = React.useMemo(
-        (): AxisOptions<Set> => ({
-            getValue: datum => datum.date,
-            scaleType: 'localTime'
-        }),
-        []
-    )
-
-    const secondaryAxes = React.useMemo(
-        (): AxisOptions<Set>[] => [
-            {
-                getValue: datum => datum.load,
-                elementType: mode === 'detailed' ? 'bubble' : 'line',
-                // min: 0
-            }
-        ],
-        [mode]
-    )
-
-    const handleModeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-        const value = e.currentTarget.value;
-        if (value === 'basic' || value === 'detailed') {
-            setMode(value);
+    useLayoutEffect(() => {
+        if (targetRef.current) {
+            setDimensions({
+                width: targetRef.current.offsetWidth,
+                height: targetRef.current.offsetHeight
+            });
         }
-    }
+    }, []);
 
     useEffect(() => {
         loadSets(Number(id));
@@ -117,24 +66,25 @@ const Exercise: React.FC = () => {
 
     return (
         <Container>
-            <ModeSelect onChange={handleModeChange}>
-                <ModeOption value='detailed' selected={mode === 'detailed'}>Подробный</ModeOption>
-                <ModeOption value='basic' selected={mode === 'basic'}>Простой</ModeOption>
-            </ModeSelect>
-            <ChartContainer>
-                {data?.length > 0 && data[0].data.length > 0 && <Chart
-                    options={{
-                        data,
-                        primaryAxis,
-                        secondaryAxes,
-                        interactionMode: "closest",
-                        getDatumStyle: (datum) =>
-                            ({
-                                circle: {r: datum.originalDatum.radius},
-
-                            } as never),
+            <ChartContainer ref={targetRef  as never}>
+                <LineChart
+                    width={dimensions.width}
+                    height={dimensions.height}
+                    data={data}
+                    margin={{
+                        top: 5,
+                        right: 30,
+                        left: 20,
+                        bottom: 5,
                     }}
-                />}
+                >
+                    <CartesianGrid strokeDasharray="10 10"/>
+                    <XAxis dataKey="date" tickFormatter={d => `${formattedDate(Number(d))}`}/>
+                    <YAxis/>
+                    <Tooltip labelFormatter={d => `${formattedDate(Number(d))}`}/>
+                    <Legend/>
+                    {lines}
+                </LineChart>
             </ChartContainer>
         </Container>
     );
