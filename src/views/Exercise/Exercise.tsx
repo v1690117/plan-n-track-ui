@@ -100,7 +100,7 @@ const Exercise: React.FC = () => {
             >
                 <CartesianGrid strokeDasharray="10 10"/>
                 <XAxis dataKey="date" tickFormatter={d => `${formattedDate(Number(d))}`}/>
-                <YAxis/>
+                <YAxis domain={[]}/>
                 <Tooltip labelFormatter={d => `${formattedDate(Number(d))}`}/>
                 <Legend/>
                 {lines}
