@@ -92,15 +92,15 @@ const Exercise: React.FC = () => {
                 height={dimensions.height}
                 data={data}
                 margin={{
-                    top: 0,
-                    right: 5,
-                    left: -30,
-                    bottom: -30,
+                    top: 10,
+                    right: 20,
+                    left: -20,
+                    bottom: -20,
                 }}
             >
                 <CartesianGrid strokeDasharray="10 10"/>
                 <XAxis dataKey="date" tickFormatter={d => `${formattedDate(Number(d))}`}/>
-                <YAxis domain={[]}/>
+                <YAxis/>
                 <Tooltip labelFormatter={d => `${formattedDate(Number(d))}`}/>
                 <Legend/>
                 {lines}
