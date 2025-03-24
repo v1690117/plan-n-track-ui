@@ -43,7 +43,7 @@ function prepareDateGroupped(sets: ISet[]) {
     return [
         Object.keys(reps),
         Object.keys(byDate)
-            .sort((a,b) => Number(b) - Number(a))
+            .sort((a,b) => Number(a) - Number(b))
             .map((k: unknown) => {
             const date: number = k as number;
             return {
