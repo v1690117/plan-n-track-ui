@@ -1,10 +1,28 @@
 import React, {useEffect, useLayoutEffect, useMemo, useRef, useState} from 'react';
-import {ChartContainer, Container} from "./ExerciseStyles";
+import {Container} from "./ExerciseStyles";
 import useAppStore from "../../store/store.ts";
 import {useParams} from "react-router-dom";
 import {ISet} from "../../model/ISet.ts";
 import {CartesianGrid, Legend, Line, LineChart, Tooltip, XAxis, YAxis} from "recharts";
 import {formattedDate} from "../../utils.ts";
+
+const colors = [
+    '#ff00aa',
+    '#d2d884',
+    '#b2d884',
+    '#d884aa',
+    '#d82979',
+    '#4c44ba',
+    '#090747',
+    '#b0afc6',
+    '#2085ec',
+    '#abe40d',
+    '#d82979',
+    '#72cfa4',
+    '#9ff13f',
+    'rgba(150,216,132,0.2)',
+    '#6d6c78',
+];
 
 function prepareDateGroupped(sets: ISet[]) {
     const reps: { [key: string]: number } = {};
@@ -39,14 +57,15 @@ const Exercise: React.FC = () => {
     const {id} = useParams<{ id: string }>();
     const sets = useAppStore(s => s.exerciseSets);
     const loadSets = useAppStore(s => s.loadExerciseSets);
-    const [dimensions, setDimensions] = useState({ width:0, height: 0 });
+    const [dimensions, setDimensions] = useState({width: 0, height: 0});
 
     const [reps, data]: [string[], { date: number }[]] = useMemo(() => {
         return prepareDateGroupped(sets)
     }, [sets]);
 
     const lines = useMemo(() => reps.map(
-        re => <Line type='linear' dataKey={re}  activeDot={{r: 8}} dot={{r: Number(re) / 2}} connectNulls={true}/>
+        re => <Line type='linear' dataKey={re} stroke={colors[Number(re) % 15]} dot={{r: Number(re) / 2}}
+                    connectNulls={true}/>
     ), [reps]);
 
 
@@ -65,27 +84,25 @@ const Exercise: React.FC = () => {
 
 
     return (
-        <Container>
-            <ChartContainer ref={targetRef  as never}>
-                <LineChart
-                    width={dimensions.width}
-                    height={dimensions.height}
-                    data={data}
-                    margin={{
-                        top: 5,
-                        right: 30,
-                        left: 20,
-                        bottom: 5,
-                    }}
-                >
-                    <CartesianGrid strokeDasharray="10 10"/>
-                    <XAxis dataKey="date" tickFormatter={d => `${formattedDate(Number(d))}`}/>
-                    <YAxis/>
-                    <Tooltip labelFormatter={d => `${formattedDate(Number(d))}`}/>
-                    <Legend/>
-                    {lines}
-                </LineChart>
-            </ChartContainer>
+        <Container ref={targetRef as never}>
+            <LineChart
+                width={dimensions.width}
+                height={dimensions.height}
+                data={data}
+                margin={{
+                    top: 5,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                }}
+            >
+                <CartesianGrid strokeDasharray="10 10"/>
+                <XAxis dataKey="date" tickFormatter={d => `${formattedDate(Number(d))}`}/>
+                <YAxis/>
+                <Tooltip labelFormatter={d => `${formattedDate(Number(d))}`}/>
+                <Legend/>
+                {lines}
+            </LineChart>
         </Container>
     );
 };
