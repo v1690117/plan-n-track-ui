@@ -31,6 +31,11 @@ interface AppStore {
     exerciseSets: ISet[];
     loadExerciseSets: (exercise: number) => Promise<void>;
 
+    workoutFilter: string;
+    setWorkoutFilter: (filter: string) => void;
+    exerciseFilter: string;
+    setExerciseFilter: (filter: string) => void;
+
     timer: number | null;
     seconds: number;
     setTimer: (seconds: number) => void;
@@ -174,6 +179,11 @@ const useAppStore = create<AppStore>()((set) => ({
             alert(error);
         }
     },
+
+    workoutFilter: '',
+    setWorkoutFilter: (filter) => set({workoutFilter: filter}),
+    exerciseFilter: '',
+    setExerciseFilter: (filter) => set({exerciseFilter: filter}),
 
     timer: null,
     seconds: 0,

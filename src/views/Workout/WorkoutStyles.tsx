@@ -5,23 +5,10 @@ export const Container = styled.div`
     flex-direction: column;
 `;
 
-export const Header = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    padding: 0 20px;
-    min-height: 56px;
-`;
-
 export const HeadingTitle = styled.div`
+    flex: 1;
+    min-width: 0;
     gap: 12px;
-    display: flex;
-    align-items: center;
-`;
-
-export const HeadingToolbar = styled.div`
-    gap: 8px;
     display: flex;
     align-items: center;
 `;

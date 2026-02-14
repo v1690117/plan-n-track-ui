@@ -3,7 +3,6 @@ import styled from "styled-components";
 export const Container = styled.div`
     display: flex;
     flex-direction: column;
-    height: 95%;
     width: 100%;
     background: #fff;
     border-radius: 12px;
@@ -11,28 +10,9 @@ export const Container = styled.div`
     padding: 8px;
 `;
 
-export const Header = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-`;
-
-export const HeadingTitle = styled.div`
-    gap: 12px;
-    display: flex;
-    align-items: center;
-    padding: 0 20px;
-`;
-
-export const HeadingToolbar = styled.div`
-    gap: 8px;
-    display: flex;
-    align-items: center;
-    padding: 0 20px;
-`;
-
 export const ExerciseTitle = styled.h1`
+    flex: 1;
+    min-width: 0;
     font-size: 18px;
     font-weight: 600;
     color: #134e4a;

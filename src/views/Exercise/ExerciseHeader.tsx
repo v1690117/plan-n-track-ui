@@ -1,11 +1,10 @@
 import React, {useCallback, useEffect} from 'react';
 import {useNavigate, useParams} from "react-router-dom";
-import {ExerciseTitle, Header, HeadingTitle, HeadingToolbar} from "./ExerciseStyles";
+import {ExerciseTitle} from "./ExerciseStyles";
 
 import useAppStore from "../../store/store.ts";
 import {IconButton} from "../../components/IconButton/IconButton.tsx";
 import {Trash2} from "lucide-react";
-
 
 const ExerciseHeader: React.FC = () => {
     const navigate = useNavigate();
@@ -30,14 +29,13 @@ const ExerciseHeader: React.FC = () => {
     }, [id, loadExercise]);
 
     useEffect(() => () => unselectExercise(), [unselectExercise]);
-    return (<Header>
-        <HeadingTitle>
+
+    return (
+        <>
             <ExerciseTitle>{exercise?.title}</ExerciseTitle>
-        </HeadingTitle>
-        <HeadingToolbar>
             <IconButton onClick={handleDeleteExercise} type={'negative'}><Trash2/></IconButton>
-        </HeadingToolbar>
-    </Header>);
+        </>
+    );
 };
 
 export default ExerciseHeader;

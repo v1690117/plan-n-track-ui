@@ -1,15 +1,8 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-    height: 100%;
     display: flex;
     flex-direction: column;
-`;
-
-export const Toolbar = styled.div`
-    display: flex;
-    gap: 10px;
-    align-items: center;
 `;
 
 export const WorkoutListWrapper = styled.div`

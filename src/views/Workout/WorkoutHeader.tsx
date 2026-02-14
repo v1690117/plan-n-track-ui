@@ -1,8 +1,7 @@
 import React, {useCallback, useEffect} from 'react';
 import {formattedDate} from "../../utils";
 import {useNavigate, useParams} from "react-router-dom";
-import {Header, HeadingTitle, HeadingToolbar, WorkoutDate, WorkoutTitle} from "./WorkoutStyles";
-
+import {HeadingTitle, WorkoutDate, WorkoutTitle} from "./WorkoutStyles";
 
 import useAppStore from "../../store/store.ts";
 import {IconButton} from "../../components/IconButton/IconButton.tsx";
@@ -29,7 +28,7 @@ const WorkoutHeader: React.FC = () => {
             const newWo = await copyWorkout(Number(id));
             navigate(`/workout/${newWo}`);
         }
-    }, [deleteWorkout, id, navigate]);
+    }, [copyWorkout, id, navigate]);
 
     useEffect(() => {
         if (id) {
@@ -38,16 +37,17 @@ const WorkoutHeader: React.FC = () => {
     }, [id, loadWorkout]);
 
     useEffect(() => () => unselectWorkout(), [unselectWorkout]);
-    return (<Header>
-        <HeadingTitle>
-            <WorkoutTitle>{workout?.title}</WorkoutTitle>
-            <WorkoutDate>{workout && formattedDate(workout.date)}</WorkoutDate>
-        </HeadingTitle>
-        <HeadingToolbar>
+
+    return (
+        <>
+            <HeadingTitle>
+                <WorkoutTitle>{workout?.title}</WorkoutTitle>
+                <WorkoutDate>{workout && formattedDate(workout.date)}</WorkoutDate>
+            </HeadingTitle>
             <IconButton onClick={handleCopyWorkout}><Copy/></IconButton>
             <IconButton onClick={handleDeleteWorkout} type={'negative'}><Trash2/></IconButton>
-        </HeadingToolbar>
-    </Header>);
+        </>
+    );
 };
 
 export default WorkoutHeader;

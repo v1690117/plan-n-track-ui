@@ -16,15 +16,10 @@ export const Header = styled.div`
     border-bottom: 1px solid #d1e7dd;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
     z-index: 10;
-`;
-
-export const Content = styled.div`
-    flex: 1;
     display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    min-height: 0;
-    height: calc(100dvh-56px-56px);
+    align-items: center;
+    padding: 0 16px;
+    gap: 10px;
 `;
 
 export const Body = styled.div`
