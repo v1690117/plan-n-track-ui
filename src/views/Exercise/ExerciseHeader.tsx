@@ -3,7 +3,8 @@ import {useNavigate, useParams} from "react-router-dom";
 import {ExerciseTitle, Header, HeadingTitle, HeadingToolbar} from "./ExerciseStyles";
 
 import useAppStore from "../../store/store.ts";
-import {TextButton} from "../../components/TextButton/TextButton.tsx";
+import {IconButton} from "../../components/IconButton/IconButton.tsx";
+import {Trash2} from "lucide-react";
 
 
 const ExerciseHeader: React.FC = () => {
@@ -34,7 +35,7 @@ const ExerciseHeader: React.FC = () => {
             <ExerciseTitle>{exercise?.title}</ExerciseTitle>
         </HeadingTitle>
         <HeadingToolbar>
-            <TextButton onClick={handleDeleteExercise} type={'negative'}>Удалить</TextButton>
+            <IconButton onClick={handleDeleteExercise} type={'negative'}><Trash2/></IconButton>
         </HeadingToolbar>
     </Header>);
 };

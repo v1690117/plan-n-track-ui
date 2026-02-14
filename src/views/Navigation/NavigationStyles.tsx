@@ -9,12 +9,29 @@ export const Container = styled.div`
 export const NavItem = styled.div`
     display: flex;
     flex: 1;
-    font-size: 16px;  
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: #5f7c78;
     justify-content: center;
     align-items: center;
-    font-weight: bold;
-    border-left: 1px solid rgba(0, 0, 0, 0.1); 
     height: 100%;
-    &:hover { background-color: ${"#f0f0f0"};}
-    &:active { background-color: ${"#d6d6d6"};}
+    transition: color 0.15s ease, background-color 0.15s ease;
+    cursor: pointer;
+    user-select: none;
+
+    &:not(:first-child) {
+        border-left: 1px solid #d1e7dd;
+    }
+
+    &:hover {
+        color: #0d9488;
+        background-color: #f0fdf9;
+    }
+
+    &:active {
+        color: #0f766e;
+        background-color: #e0f5f0;
+    }
 `;

@@ -2,7 +2,8 @@ import React, {useEffect, useState} from "react";
 import {Checkbox, Input, SetRow, Wrapper} from "./SetStyles";
 import {ISet} from "../../../model/ISet";
 import useAppStore from "../../../store/store.ts";
-import {TextButton} from "../../../components/TextButton/TextButton.tsx";
+import {IconButton} from "../../../components/IconButton/IconButton.tsx";
+import {Check, Trash2} from "lucide-react";
 
 interface SetProps {
     set: ISet;
@@ -73,9 +74,9 @@ const Set: React.FC<SetProps> = (props) => {
             <Input type="number" placeholder="Ве    с" value={load || ''} onChange={onLoadChangedHandler}/>
             <Input type="number" placeholder="Повторения" value={reps || ''} onChange={onRepsChangeHandler}/>
             <Input type="number" placeholder="Отдых" value={rest || ''} onChange={onRestChangedHandler}/>
-            <TextButton onClick={onDeleteClickHandler} type={'negative'}>Удалить</TextButton>
+            <IconButton onClick={onDeleteClickHandler} type={'negative'}><Trash2/></IconButton>
         </SetRow>
-        {hasChanges && <TextButton onClick={onClickSaveHandler}>Сохранить</TextButton>}
+        {hasChanges && <IconButton onClick={onClickSaveHandler}><Check/></IconButton>}
     </Wrapper>
 }
 export default Set;

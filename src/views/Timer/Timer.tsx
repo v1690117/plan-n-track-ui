@@ -1,7 +1,8 @@
 import React, {useCallback, useState} from "react";
 import {Input, SecondsDisplay, TimerContainer} from "./TimerStyles.tsx";
 import useAppStore from "../../store/store.ts";
-import {TextButton} from "../../components/TextButton/TextButton.tsx";
+import {IconButton} from "../../components/IconButton/IconButton.tsx";
+import {Play, RotateCcw} from "lucide-react";
 
 const Timer: React.FC = () => {
     const [rest, setRest] = useState(0);
@@ -20,9 +21,9 @@ const Timer: React.FC = () => {
 
     return <TimerContainer>
         <Input type="number" placeholder="Таймер" value={rest} onChange={onRestChangedHandler}/>
-        <TextButton onClick={onStartClickHandler}>Запустить</TextButton>
+        <IconButton onClick={onStartClickHandler}><Play/></IconButton>
         <SecondsDisplay>{seconds}</SecondsDisplay>
-        <TextButton onClick={onResetClickHandler} type={'negative'}>Сбросить</TextButton>
+        <IconButton onClick={onResetClickHandler} type={'negative'}><RotateCcw/></IconButton>
     </TimerContainer>;
 }
 

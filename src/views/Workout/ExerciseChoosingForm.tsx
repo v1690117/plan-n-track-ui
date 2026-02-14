@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import styled from "styled-components";
-import {TextButton} from "../../components/TextButton/TextButton.tsx";
+import {IconButton} from "../../components/IconButton/IconButton.tsx";
+import {Plus, X} from "lucide-react";
 import useAppStore from "../../store/store.ts";
 
 const CreationFormContainer = styled.div`
@@ -9,49 +10,65 @@ const CreationFormContainer = styled.div`
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: white;
+    background-color: #f0fdf4;
     display: flex;
     flex-direction: column;
+    z-index: 20;
 `
 
 const SearchableSelect = styled.div`
-    margin: 10px;
+    padding: 16px;
     display: flex;
     flex-direction: column;
-    cursor: pointer;
-    gap: 10px;
+    gap: 12px;
+    flex: 1;
+    overflow-y: auto;
 `
 
 const Input = styled.input`
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 16px;
+    padding: 10px 14px;
+    border: 1px solid #d1e7dd;
+    border-radius: 10px;
+    font-size: 15px;
+    color: #134e4a;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    transition: border-color 0.15s ease;
+
+    &:focus {
+        outline: none;
+        border-color: #0d9488;
+        box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+    }
 `;
 
 const Ul = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
 `
 
 const Li = styled.div`
     display: flex;
     justify-content: space-between;
-    gap: 8px;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: white;
-    font-size: 16px;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    font-size: 15px;
 `
 
 const ExerciseTitle = styled.div`
-    
+    font-weight: 500;
+    color: #134e4a;
 `;
 
 const Toolbar = styled.div`
-    margin: 0px 10px;
+    padding: 12px 16px;
+    background: #fff;
+    border-top: 1px solid #d1e7dd;
 `;
 
 interface WorkoutCreationFormProps {
@@ -94,12 +111,12 @@ const ExerciseChoosingForm: React.FC<WorkoutCreationFormProps> = ({onClose}) => 
                 <Ul>
                     {filteredExercises.map(ex => <Li key={ex.id}>
                         <ExerciseTitle>{ex.title}</ExerciseTitle>
-                        <TextButton onClick={() => handleAddExercise(ex.id)}>Добавить</TextButton>
+                        <IconButton onClick={() => handleAddExercise(ex.id)}><Plus/></IconButton>
                     </Li>)}
                 </Ul>
             </SearchableSelect>
             <Toolbar>
-                <TextButton type={'negative'} onClick={onClose}>Отмена</TextButton>
+                <IconButton type={'negative'} onClick={onClose}><X/></IconButton>
             </Toolbar>
         </CreationFormContainer>
     );

@@ -5,7 +5,8 @@ import {Header, HeadingTitle, HeadingToolbar, WorkoutDate, WorkoutTitle} from ".
 
 
 import useAppStore from "../../store/store.ts";
-import {TextButton} from "../../components/TextButton/TextButton.tsx";
+import {IconButton} from "../../components/IconButton/IconButton.tsx";
+import {Copy, Trash2} from "lucide-react";
 
 const WorkoutHeader: React.FC = () => {
     const navigate = useNavigate();
@@ -43,8 +44,8 @@ const WorkoutHeader: React.FC = () => {
             <WorkoutDate>{workout && formattedDate(workout.date)}</WorkoutDate>
         </HeadingTitle>
         <HeadingToolbar>
-            <TextButton onClick={handleCopyWorkout}>Копировать</TextButton>
-            <TextButton onClick={handleDeleteWorkout} type={'negative'}>Удалить</TextButton>
+            <IconButton onClick={handleCopyWorkout}><Copy/></IconButton>
+            <IconButton onClick={handleDeleteWorkout} type={'negative'}><Trash2/></IconButton>
         </HeadingToolbar>
     </Header>);
 };

@@ -1,22 +1,24 @@
 import styled from "styled-components";
 
-interface TextButtonProps {
+interface IconButtonProps {
     type?: 'positive' | 'negative';
 }
 
-export const TextButton = styled.button<TextButtonProps>`
-    padding: 8px 16px;
+export const IconButton = styled.button<IconButtonProps>`
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
     background-color: ${({type}) =>
             type === 'negative' ? '#ef4c53' : '#0d9488'};
     color: #fff;
     border: none;
-    border-radius: 8px;
+    border-radius: 50%;
     cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: 0.01em;
-    white-space: nowrap;
     transition: background-color 0.15s ease, transform 0.1s ease;
+    flex-shrink: 0;
 
     &:hover {
         background-color: ${({type}) =>
@@ -26,10 +28,15 @@ export const TextButton = styled.button<TextButtonProps>`
     &:active {
         background-color: ${({type}) =>
                 type === 'negative' ? '#b8293a' : '#115e59'};
-        transform: scale(0.97);
+        transform: scale(0.93);
+    }
+
+    svg {
+        width: 18px;
+        height: 18px;
     }
 `;
 
-TextButton.defaultProps = {
+IconButton.defaultProps = {
     type: 'positive',
 };

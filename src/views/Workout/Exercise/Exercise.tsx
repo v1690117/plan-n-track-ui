@@ -3,7 +3,8 @@ import Set from "../Set/Set.tsx";
 import React, {useCallback, useState} from "react";
 import {ISet} from "../../../model/ISet.ts";
 import useAppStore from "../../../store/store.ts";
-import {TextButton} from "../../../components/TextButton/TextButton.tsx";
+import {IconButton} from "../../../components/IconButton/IconButton.tsx";
+import {Plus} from "lucide-react";
 
 interface ExerciseProps {
     name: string;
@@ -40,7 +41,7 @@ const Exercise: React.FC<ExerciseProps> = ({name, sets, exerciseId}) => {
         {expansion[name] && (
             <ExerciseDetails>
                 {sets.map((set, index) => <Set set={set} key={index}/>)}
-                <TextButton onClick={() => handleAddSet(exerciseId)}>Добавить подход</TextButton>
+                <IconButton onClick={() => handleAddSet(exerciseId)}><Plus/></IconButton>
             </ExerciseDetails>
         )}
     </ExerciseCard>
