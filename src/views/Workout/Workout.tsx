@@ -6,7 +6,8 @@ import {Container, ExerciseList, Toolbar} from "./WorkoutStyles";
 import Exercise from "./Exercise/Exercise.tsx";
 
 import useAppStore from "../../store/store.ts";
-import {TextButton} from "../../components/TextButton/TextButton.tsx";
+import {IconButton} from "../../components/IconButton/IconButton.tsx";
+import {Plus} from "lucide-react";
 import ExerciseChoosingForm from "./ExerciseChoosingForm.tsx";
 
 interface Exercise {
@@ -69,7 +70,7 @@ const Workout: React.FC = () => {
             {workout && <>
                 {exercisesComponent}
                     <Toolbar>
-                        <TextButton onClick={handleAddExercise}>Добавить упражнение</TextButton>
+                        <IconButton onClick={handleAddExercise}><Plus/></IconButton>
                     </Toolbar>
             </>}
             {showExCreationForm && <ExerciseChoosingForm onClose={closeExCreation}/>}

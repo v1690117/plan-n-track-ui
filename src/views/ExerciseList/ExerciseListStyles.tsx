@@ -1,25 +1,15 @@
 import styled from "styled-components";
 
-export const Header = styled.div`
-    height: 100%;
-    display: flex;
-    gap: 12px;
-    justify-content: space-between;
-    padding: 0 20px;
-    align-items: center;
-`;
-
-export const Title = styled.h2`
-    font-size: 18px;
-    font-weight: 600;
-    color: #134e4a;
-    margin: 0;
-`;
-
 export const Container = styled.div`
     display: flex;
     flex-direction: column;
     height: 100%;
+`;
+
+export const Toolbar = styled.div`
+    display: flex;
+    gap: 10px;
+    align-items: center;
 `;
 
 export const ExerciseListWrapper = styled.div`
@@ -57,6 +47,8 @@ export const ExerciseTitle = styled.div`
 `;
 
 export const ExerciseFilter = styled.input`
+    flex: 1;
+    min-width: 0;
     padding: 10px 14px;
     border: 1px solid #d1e7dd;
     border-radius: 10px;
