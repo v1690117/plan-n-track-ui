@@ -18,10 +18,19 @@ export const Header = styled.div`
     z-index: 10;
 `;
 
+export const Content = styled.div`
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-height: 0;
+`;
+
 export const Body = styled.div`
     flex: 1;
     overflow-y: auto;
     padding: 16px;
+    min-height: 0;
 `;
 
 export const NavBar = styled.div`
