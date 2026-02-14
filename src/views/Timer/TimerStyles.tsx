@@ -1,10 +1,7 @@
 import styled from "styled-components";
 
-export const TimerContainer = styled.span`
-    position: absolute;
-    bottom: 56px;
-    left: 0;
-    width: 100%;
+export const TimerContainer = styled.div`
+    flex-shrink: 0;
     height: 52px;
     background: #fff;
     border-top: 1px solid #d1e7dd;
