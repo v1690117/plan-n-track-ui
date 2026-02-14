@@ -24,6 +24,7 @@ export const Content = styled.div`
     flex-direction: column;
     overflow: hidden;
     min-height: 0;
+    height: calc(100dvh-56px-56px);
 `;
 
 export const Body = styled.div`

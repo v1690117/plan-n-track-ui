@@ -9,12 +9,9 @@ const Navigation: React.FC = () => {
 
     const onWorkoutsClickHandler = () => navigate("/");
     const onExercisesClickHandler = () => navigate("/exercises");
-    const onProfileClickHandler = () => alert("Ooops! Not implemented yet!");
-
     return <Container>
         <NavItem $active={path === '/' || path.startsWith('/workout')} onClick={onWorkoutsClickHandler}>Тренировки</NavItem>
         <NavItem $active={path.startsWith('/exercises')} onClick={onExercisesClickHandler}>Упражнения</NavItem>
-        <NavItem onClick={onProfileClickHandler}>Профиль</NavItem>
     </Container>
 }
 
